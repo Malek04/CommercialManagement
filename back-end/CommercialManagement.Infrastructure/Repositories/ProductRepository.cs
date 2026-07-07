@@ -1,5 +1,7 @@
 ﻿using CommercialManagement.Core.IRepositories;
 using CommercialManagement.Core.Models;
+using CommercialManagement.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,29 +12,46 @@ namespace CommercialManagement.Infrastructure.Repositories
 {
     public class ProductRepository : IProductRepository
     {
-        public void AddProduct(Client client)
+        private readonly CommercialManagementDbContext _context;
+
+        public ProductRepository(CommercialManagementDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public IEnumerable<Product> GetProduct()
+        {
+            return _context.Products
+                           .AsNoTracking()
+                           .OrderByDescending(p => p.Created)
+                           .ToList();
         }
 
-        public void DeleteProduct(Client client)
+        public Product? GetProductById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Products
+                           .AsNoTracking()
+                           .FirstOrDefault(c => c.Id == id);
         }
 
-        public Client GetOProductById(Guid id)
+        public void AddProduct(Product product)
         {
-            throw new NotImplementedException();
+            product.Id = Guid.NewGuid();
+            product.Created = DateTime.UtcNow;
+
+            _context.Products.Add(product);
+            _context.SaveChanges();
         }
 
-        public IEnumerable<Client> GetProduct()
+        public void UpdateProduct(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.Update(product);
+            _context.SaveChanges();
         }
 
-        public void UpdateProduct(Client client)
+        public void DeleteProduct(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.Remove(product);
+            _context.SaveChanges();
         }
     }
 }

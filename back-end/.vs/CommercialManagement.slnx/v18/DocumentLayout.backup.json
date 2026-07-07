@@ -3,8 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.api\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|solutionrelative:commercialmanagement.api\\controllers\\productcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|solutionrelative:commercialmanagement.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.core\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|solutionrelative:commercialmanagement.core\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.api\\controllers\\clientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|solutionrelative:commercialmanagement.api\\controllers\\clientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1F5C946-D0FB-44EE-B991-BCAECDF89596}|CommercialManagement.Infrastructure\\CommercialManagement.Infrastructure.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.infrastructure\\repositories\\productrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A1F5C946-D0FB-44EE-B991-BCAECDF89596}|CommercialManagement.Infrastructure\\CommercialManagement.Infrastructure.csproj|solutionrelative:commercialmanagement.infrastructure\\repositories\\productrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.core\\irepositories\\iorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|solutionrelative:commercialmanagement.core\\irepositories\\iorderrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.core\\irepositories\\iproductrepository..cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|solutionrelative:commercialmanagement.core\\irepositories\\iproductrepository..cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A1F5C946-D0FB-44EE-B991-BCAECDF89596}|CommercialManagement.Infrastructure\\CommercialManagement.Infrastructure.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.infrastructure\\repositories\\clientrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -13,6 +37,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.core\\irepositories\\iclientrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|solutionrelative:commercialmanagement.core\\irepositories\\iclientrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.core\\models\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|solutionrelative:commercialmanagement.core\\models\\client.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,41 +58,132 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Program.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Api\\Program.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Program.cs",
+              "RelativeToolTip": "CommercialManagement.Api\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-07T20:11:52.301Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Product.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Core\\Models\\Product.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\Models\\Product.cs",
+              "RelativeToolTip": "CommercialManagement.Core\\Models\\Product.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-07T20:02:10.874Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ProductController.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Controllers\\ProductController.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Api\\Controllers\\ProductController.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Controllers\\ProductController.cs",
+              "RelativeToolTip": "CommercialManagement.Api\\Controllers\\ProductController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-07T20:00:21.176Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "IOrderRepository.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\IRepositories\\IOrderRepository.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Core\\IRepositories\\IOrderRepository.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\IRepositories\\IOrderRepository.cs",
+              "RelativeToolTip": "CommercialManagement.Core\\IRepositories\\IOrderRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-07T19:59:51.446Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IProductRepository..cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\IRepositories\\IProductRepository..cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Core\\IRepositories\\IProductRepository..cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\IRepositories\\IProductRepository..cs",
+              "RelativeToolTip": "CommercialManagement.Core\\IRepositories\\IProductRepository..cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-07T19:55:28.134Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ProductRepository.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Infrastructure\\Repositories\\ProductRepository.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Infrastructure\\Repositories\\ProductRepository.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Infrastructure\\Repositories\\ProductRepository.cs",
+              "RelativeToolTip": "CommercialManagement.Infrastructure\\Repositories\\ProductRepository.cs",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAIwCMAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-07T19:52:41.353Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ClientRepository.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Infrastructure\\Repositories\\ClientRepository.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Infrastructure\\Repositories\\ClientRepository.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Infrastructure\\Repositories\\ClientRepository.cs",
+              "RelativeToolTip": "CommercialManagement.Infrastructure\\Repositories\\ClientRepository.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-07T19:52:33.279Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "ClientController.cs",
               "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Controllers\\ClientController.cs",
               "RelativeDocumentMoniker": "CommercialManagement.Api\\Controllers\\ClientController.cs",
               "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Controllers\\ClientController.cs",
               "RelativeToolTip": "CommercialManagement.Api\\Controllers\\ClientController.cs",
-              "ViewState": "AgIAAFEAAAAAAAAAAAAowFwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-07T17:45:34.154Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 8,
               "Title": "IClientRepository.cs",
               "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\IRepositories\\IClientRepository.cs",
               "RelativeDocumentMoniker": "CommercialManagement.Core\\IRepositories\\IClientRepository.cs",
               "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\IRepositories\\IClientRepository.cs",
               "RelativeToolTip": "CommercialManagement.Core\\IRepositories\\IClientRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-07T17:45:20.665Z",
+              "WhenOpened": "2026-07-07T19:55:34.177Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ClientRepository.cs",
-              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Infrastructure\\Repositories\\ClientRepository.cs",
-              "RelativeDocumentMoniker": "CommercialManagement.Infrastructure\\Repositories\\ClientRepository.cs",
-              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Infrastructure\\Repositories\\ClientRepository.cs",
-              "RelativeToolTip": "CommercialManagement.Infrastructure\\Repositories\\ClientRepository.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAAAkwDQAAAABAAAAAAAAAA==",
+              "DocumentIndex": 9,
+              "Title": "Client.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\Models\\Client.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Core\\Models\\Client.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\Models\\Client.cs",
+              "RelativeToolTip": "CommercialManagement.Core\\Models\\Client.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-07T17:10:05.056Z",
+              "WhenOpened": "2026-07-07T19:55:14.265Z",
               "EditorCaption": ""
             }
           ]

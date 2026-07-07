@@ -9,10 +9,10 @@ namespace CommercialManagement.Core.IRepositories
 {
     public interface IProductRepository
     {
-        IEnumerable<Client> GetProduct();
-        Client GetOProductById(Guid id);
-        void AddProduct(Client client);
-        void UpdateProduct(Client client);
-        void DeleteProduct(Client client);
+        IEnumerable<Product> GetProduct();
+        Product? GetProductById(Guid id);
+        void AddProduct(Product product);
+        void UpdateProduct(Product product);
+        void DeleteProduct(Product product);
     }
 }
