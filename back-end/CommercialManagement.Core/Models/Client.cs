@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace CommercialManagement.Core.Models
 {
@@ -14,8 +9,16 @@ namespace CommercialManagement.Core.Models
         public string? FirstName { get; set; }
         public string? Email { get; set; }
         public string? Phone { get; set; }
-        [NotMapped]
-        public Adresse Adresse { get; set; } = new();
+        public Adresse Adresse { get; set; } = new Adresse();
         public DateTime Created { get; set; } = DateTime.UtcNow;
+    }
+
+    [Owned]
+    public class Adresse
+    {
+        public string? Rue { get; set; }
+        public string? Ville { get; set; }
+        public string? CodePostal { get; set; }
+        public string? Pays { get; set; }
     }
 }
