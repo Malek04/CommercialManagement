@@ -10,7 +10,7 @@ namespace CommercialManagement.Core.IRepositories
     public interface IClientRepository
     {
         IEnumerable<Client> GetClients();
-        Client GetClientById(Guid id);
+        Client? GetClientById(Guid id);
         void AddClient(Client client);
         void UpdateClient(Client client);
         void DeleteClient(Client client);

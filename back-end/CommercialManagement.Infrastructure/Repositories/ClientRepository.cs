@@ -1,38 +1,53 @@
 ﻿using CommercialManagement.Core.IRepositories;
 using CommercialManagement.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CommercialManagement.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommercialManagement.Infrastructure.Repositories
 {
     public class ClientRepository : IClientRepository
     {
-        public void AddClient(Client client)
-        {
-            throw new NotImplementedException();
-        }
+        private readonly CommercialManagementDbContext _context;
 
-        public void DeleteClient(Client client)
+        public ClientRepository(CommercialManagementDbContext context)
         {
-            throw new NotImplementedException();
-        }
-
-        public Client GetClientById(Guid id)
-        {
-            throw new NotImplementedException();
+            _context = context;
         }
 
         public IEnumerable<Client> GetClients()
         {
-            throw new NotImplementedException();
+            return _context.Clients
+                           .AsNoTracking()
+                           .OrderByDescending(c => c.Created)
+                           .ToList();
+        }
+
+        public Client? GetClientById(Guid id)
+        {
+            return _context.Clients
+                           .AsNoTracking()
+                           .FirstOrDefault(c => c.Id == id);
+        }
+
+        public void AddClient(Client client)
+        {
+            client.Id = Guid.NewGuid();
+            client.Created = DateTime.UtcNow;
+
+            _context.Clients.Add(client);
+            _context.SaveChanges();
         }
 
         public void UpdateClient(Client client)
         {
-            throw new NotImplementedException();
+            _context.Clients.Update(client);
+            _context.SaveChanges();
+        }
+
+        public void DeleteClient(Client client)
+        {
+            _context.Clients.Remove(client);
+            _context.SaveChanges();
         }
     }
 }

@@ -150,3 +150,4 @@ C:\Users\malek\Documents\projet\CommercialManagement\back-end\CommercialManageme
 C:\Users\malek\Documents\projet\CommercialManagement\back-end\CommercialManagement.Api\bin\Debug\net8.0\CommercialManagement.Infrastructure.dll
 C:\Users\malek\Documents\projet\CommercialManagement\back-end\CommercialManagement.Api\bin\Debug\net8.0\CommercialManagement.Infrastructure.pdb
 C:\Users\malek\Documents\projet\CommercialManagement\back-end\CommercialManagement.Api\bin\Debug\net8.0\CommercialManagement.Core.pdb
+C:\Users\malek\Documents\projet\CommercialManagement\back-end\CommercialManagement.Api\bin\Debug\net8.0\AutoMapper.dll
