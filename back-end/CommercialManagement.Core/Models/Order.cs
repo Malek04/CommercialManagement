@@ -25,7 +25,5 @@ namespace CommercialManagement.Core.Models
 
         public decimal TotalTTC { get; set; }
 
-        // Navigation Property
-        public ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
     }
 }
