@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="CommercialManagement.Api/CommercialManagement.Api.csproj" Id="536d5ba1-dd5c-4a11-8bd9-bcbc2b1835a9" />
+  <Project Path="CommercialManagement.Core/CommercialManagement.Core.csproj" Id="4d3f2a56-1801-4327-abfd-3b419e269908" />
+  <Project Path="CommercialManagement.Infrastructure/CommercialManagement.Infrastructure.csproj" Id="a1f5c946-d0fb-44ee-b991-bcaecdf89596" />
+</Solution>

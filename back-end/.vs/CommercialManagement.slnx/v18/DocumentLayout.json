@@ -1,0 +1,92 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.core\\commercialmanagement.core.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|solutionrelative:commercialmanagement.core\\commercialmanagement.core.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A1F5C946-D0FB-44EE-B991-BCAECDF89596}|CommercialManagement.Infrastructure\\CommercialManagement.Infrastructure.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.infrastructure\\commercialmanagement.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A1F5C946-D0FB-44EE-B991-BCAECDF89596}|CommercialManagement.Infrastructure\\CommercialManagement.Infrastructure.csproj|solutionrelative:commercialmanagement.infrastructure\\commercialmanagement.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.api\\commercialmanagement.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|solutionrelative:commercialmanagement.api\\commercialmanagement.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.api\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|solutionrelative:commercialmanagement.api\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CommercialManagement.Infrastructure",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Infrastructure\\CommercialManagement.Infrastructure.csproj",
+              "RelativeDocumentMoniker": "CommercialManagement.Infrastructure\\CommercialManagement.Infrastructure.csproj",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Infrastructure\\CommercialManagement.Infrastructure.csproj",
+              "RelativeToolTip": "CommercialManagement.Infrastructure\\CommercialManagement.Infrastructure.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-07-07T12:13:15.474Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "CommercialManagement.Core",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\CommercialManagement.Core.csproj",
+              "RelativeDocumentMoniker": "CommercialManagement.Core\\CommercialManagement.Core.csproj",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\CommercialManagement.Core.csproj",
+              "RelativeToolTip": "CommercialManagement.Core\\CommercialManagement.Core.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-07-07T12:12:21.748Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CommercialManagement.Api",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\CommercialManagement.Api.csproj",
+              "RelativeDocumentMoniker": "CommercialManagement.Api\\CommercialManagement.Api.csproj",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\CommercialManagement.Api.csproj",
+              "RelativeToolTip": "CommercialManagement.Api\\CommercialManagement.Api.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-07-07T12:11:47.939Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "WeatherForecast.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\WeatherForecast.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Api\\WeatherForecast.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\WeatherForecast.cs",
+              "RelativeToolTip": "CommercialManagement.Api\\WeatherForecast.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-07T12:10:36.799Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

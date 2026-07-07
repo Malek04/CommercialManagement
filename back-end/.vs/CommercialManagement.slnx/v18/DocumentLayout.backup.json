@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.api\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|solutionrelative:commercialmanagement.api\\weatherforecast.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "WeatherForecast.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\WeatherForecast.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Api\\WeatherForecast.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\WeatherForecast.cs",
+              "RelativeToolTip": "CommercialManagement.Api\\WeatherForecast.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-07T12:10:36.799Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
