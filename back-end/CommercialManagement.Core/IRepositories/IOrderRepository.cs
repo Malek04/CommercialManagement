@@ -9,10 +9,10 @@ namespace CommercialManagement.Core.IRepositories
 {
     public interface IOrderRepository
     {
-        IEnumerable<Client> GetOrder();
-        Client GetOrderById(Guid id);
-        void AddOrder(Client client);
-        void UpdateOrder(Client client);
-        void DeleteOrder(Client client);
+        IEnumerable<Order> GetOrder();
+        Order GetOrderById(Guid id);
+        void AddOrder(Order order);
+        void UpdateOrder(Order order);
+        void DeleteOrder(Order order);
     }
 }

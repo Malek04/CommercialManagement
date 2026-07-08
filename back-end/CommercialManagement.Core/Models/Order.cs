@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CommercialManagement.Core.Models
@@ -15,7 +16,6 @@ namespace CommercialManagement.Core.Models
 
         public Guid ClientId { get; set; }
 
-        public Client Client { get; set; } = null!;
 
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
@@ -24,6 +24,10 @@ namespace CommercialManagement.Core.Models
         public decimal TotalHT { get; set; }
 
         public decimal TotalTTC { get; set; }
+        //navigation property
+        [JsonIgnore]
+        public Client? Client { get; set; }
+
 
     }
 }

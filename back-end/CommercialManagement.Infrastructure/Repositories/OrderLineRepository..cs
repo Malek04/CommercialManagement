@@ -10,27 +10,27 @@ namespace CommercialManagement.Infrastructure.Repositories
 {
     public class OrderLineRepository : IOrderLineRepository
     {
-        public void AddOrderLine(Client client)
+        public void AddOrderLine(OrderLine orderLine)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteOrderLine(Client client)
+        public void DeleteOrderLine(OrderLine orderLine)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Client> GetOrderLine()
+        public IEnumerable<OrderLine> GetOrderLine()
         {
             throw new NotImplementedException();
         }
 
-        public Client GetOrderLineById(Guid id)
+        public OrderLine GetOrderLineById(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public void UpdateOrderLine(Client client)
+        public void UpdateOrderLine(OrderLine orderLine)
         {
             throw new NotImplementedException();
         }

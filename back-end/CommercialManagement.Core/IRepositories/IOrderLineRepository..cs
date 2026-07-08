@@ -9,10 +9,10 @@ namespace CommercialManagement.Core.IRepositories
 {
     public interface IOrderLineRepository
     {
-        IEnumerable<Client> GetOrderLine();
-        Client GetOrderLineById(Guid id);
-        void AddOrderLine(Client client);
-        void UpdateOrderLine(Client client);
-        void DeleteOrderLine(Client client);
+        IEnumerable<OrderLine> GetOrderLine();
+        OrderLine GetOrderLineById(Guid id);
+        void AddOrderLine(OrderLine orderLine);
+        void UpdateOrderLine(OrderLine orderLine);
+        void DeleteOrderLine(OrderLine orderLine);
     }
 }

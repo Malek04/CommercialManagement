@@ -1,3 +1,4 @@
+using CommercialManagement.Api.Mappers;
 using CommercialManagement.Core.IRepositories;
 using CommercialManagement.Infrastructure.Context;
 using CommercialManagement.Infrastructure.Repositories;
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -17,6 +19,12 @@ builder.Services.AddSwaggerGen();
 //DatabseConnection
 builder.Services.AddDbContext<CommercialManagementDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//Mapping
+builder.Services.AddAutoMapper(
+    cfg => { },
+    typeof(MappingProfile)
+);
 
 var app = builder.Build();
 

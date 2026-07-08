@@ -1,38 +1,56 @@
 ﻿using CommercialManagement.Core.IRepositories;
 using CommercialManagement.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CommercialManagement.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace CommercialManagement.Infrastructure.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
-        public void AddOrder(Client client)
+        private readonly CommercialManagementDbContext _context;
+
+        public OrderRepository(CommercialManagementDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public void DeleteOrder(Client client)
+
+        public IEnumerable<Order> GetOrder()
         {
-            throw new NotImplementedException();
+            return _context.Orders
+                           .Include(o => o.Client)
+                           .AsNoTracking()
+                           .OrderByDescending(o => o.OrderDate)
+                           .ToList();
         }
 
-        public IEnumerable<Client> GetOrder()
+
+        public Order? GetOrderById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Orders
+                           .Include(o => o.Client)
+                           .FirstOrDefault(o => o.Id == id);
         }
 
-        public Client GetOrderById(Guid id)
+
+        public void AddOrder(Order order)
         {
-            throw new NotImplementedException();
+            _context.Orders.Add(order);
+            _context.SaveChanges();
         }
 
-        public void UpdateOrder(Client client)
+
+        public void UpdateOrder(Order order)
         {
-            throw new NotImplementedException();
+            _context.Orders.Update(order);
+            _context.SaveChanges();
+        }
+
+
+        public void DeleteOrder(Order order)
+        {
+            _context.Orders.Remove(order);
+            _context.SaveChanges();
         }
     }
 }

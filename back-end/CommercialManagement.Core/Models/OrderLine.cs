@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CommercialManagement.Core.Models
@@ -13,16 +14,17 @@ namespace CommercialManagement.Core.Models
 
         public Guid OrderId { get; set; }
 
-        public Order Order { get; set; } = null!;
-
         public Guid ProductId { get; set; }
-
-        public Product Product { get; set; } = null!;
 
         public int Quantity { get; set; }
 
         public decimal UnitPrice { get; set; }
 
         public decimal TotalLine { get; set; }
+        //navigation property
+        [JsonIgnore]
+        public Order? Order { get; set; }
+        [JsonIgnore]
+        public Product? Product { get; set; }
     }
 }
