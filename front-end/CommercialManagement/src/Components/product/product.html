@@ -1,1 +1,166 @@
-<p>product works!</p>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-box-seam"></i> Gestion des Produits</h2>
+    <button class="btn btn-primary" (click)="openAddModal()">
+      <i class="bi bi-plus-circle"></i> Ajouter un produit
+    </button>
+  </div>
+
+  <!-- List -->
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5>Liste des Produits</h5>
+      <button
+        class="btn btn-outline-primary btn-sm"
+        (click)="loadProducts()"
+        [disabled]="loading()"
+      >
+        <span *ngIf="loading()" class="spinner-border spinner-border-sm me-1"></span>
+        <i class="bi bi-arrow-clockwise" *ngIf="!loading()"></i> Rafraîchir
+      </button>
+    </div>
+    <div class="card-body p-0">
+      <!-- Loading state -->
+      <div *ngIf="loading()" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <p class="mt-2 text-muted">Chargement des produits...</p>
+      </div>
+
+      <!-- Table -->
+      <table
+        class="table table-hover mb-0"
+        *ngIf="!loading() && dataLoaded() && products().length > 0"
+      >
+        <thead class="table-light">
+          <tr>
+            <th>Référence</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th class="text-end">Prix HT</th>
+            <th class="text-end">Stock</th>
+            <th>Date de création</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of products(); trackBy: trackById">
+            <td>{{ p.reference }}</td>
+            <td>{{ p.name }}</td>
+            <td>{{ p.description }}</td>
+            <td class="text-end">{{ p.unitPriceHT | number:'1.3-3' }} DT</td>
+
+            <td class="text-end">{{ p.stockQuantity }}</td>
+            <td>{{ p.created ? (p.created | date: 'dd/MM/yyyy HH:mm') : '-' }}</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-warning me-2" (click)="openEditModal(p)">
+                Modifier
+              </button>
+              <button class="btn btn-sm btn-danger" (click)="delete(p.id)">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div
+        *ngIf="!loading() && dataLoaded() && products().length === 0"
+        class="text-center py-5 text-muted"
+      >
+        Aucun produit pour le moment.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Modal Ajout / Modification -->
+<div class="modal fade" #productModal tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <form [formGroup]="addOrEditForm" (ngSubmit)="submit()">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ isEdit ? 'Modifier Produit' : 'Ajouter un Produit' }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Référence</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="reference"
+                [class.is-invalid]="
+                  addOrEditForm.get('reference')?.invalid && addOrEditForm.get('reference')?.touched
+                "
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Nom</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="name"
+                [class.is-invalid]="
+                  addOrEditForm.get('name')?.invalid && addOrEditForm.get('name')?.touched
+                "
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" rows="3" formControlName="description"></textarea>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Prix Unitaire HT (DT)</label>
+              <div class="input-group">
+                <input
+                  type="number"
+                  step="0.001"
+                  min="0"
+                  class="form-control"
+                  formControlName="unitPriceHT"
+                  [class.is-invalid]="
+                    addOrEditForm.get('unitPriceHT')?.invalid &&
+                    addOrEditForm.get('unitPriceHT')?.touched
+                  "
+                />
+                <span class="input-group-text">DT</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Quantité en Stock</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="stockQuantity"
+                [class.is-invalid]="
+                  addOrEditForm.get('stockQuantity')?.invalid &&
+                  addOrEditForm.get('stockQuantity')?.touched
+                "
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button type="submit" class="btn btn-success" [disabled]="submitting()">
+            <span *ngIf="submitting()" class="spinner-border spinner-border-sm me-1"></span>
+            {{ isEdit ? 'Mettre à jour' : 'Ajouter Produit' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
