@@ -1,1 +1,217 @@
-<p>order works!</p>
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-receipt"></i> Gestion des Commandes</h2>
+    <button class="btn btn-primary" (click)="openAddModal()">
+      <i class="bi bi-plus-circle"></i> Ajouter une commande
+    </button>
+  </div>
+
+  <!-- List -->
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5>Liste des Commandes</h5>
+      <button class="btn btn-outline-primary btn-sm" (click)="loadOrders()" [disabled]="loading()">
+        <span *ngIf="loading()" class="spinner-border spinner-border-sm me-1"></span>
+        <i class="bi bi-arrow-clockwise" *ngIf="!loading()"></i> Rafraîchir
+      </button>
+    </div>
+    <div class="card-body p-0">
+
+      <!-- Loading state -->
+      <div *ngIf="loading()" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <p class="mt-2 text-muted">Chargement des commandes...</p>
+      </div>
+
+      <!-- Table -->
+      <table class="table table-hover mb-0" *ngIf="!loading() && dataLoaded() && orders().length > 0">
+        <thead class="table-light">
+          <tr>
+            <th>N° Commande</th>
+            <th>Client</th>
+            <th>Date</th>
+            <th>Statut</th>
+            <th class="text-end">Total HT</th>
+            <th class="text-end">Total TTC</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let o of orders(); trackBy: trackById">
+            <td>{{ o.orderNumber }}</td>
+            <td>{{ o.clientName || clientName(o.clientId) }}</td>
+            <td>{{ o.orderDate | date:'dd/MM/yyyy' }}</td>
+            <td>
+              <span class="badge bg-secondary">{{ statusLabel(o.status) }}</span>
+            </td>
+            <td class="text-end">{{ o.totalHT | number:'1.3-3' }} DT</td>
+            <td class="text-end">{{ o.totalTTC | number:'1.3-3' }} DT</td>
+            <td class="text-end">
+              <button class="btn btn-sm btn-warning me-2" (click)="openEditModal(o)">Modifier</button>
+              <button class="btn btn-sm btn-danger" (click)="delete(o.id)">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div *ngIf="!loading() && dataLoaded() && orders().length === 0" class="text-center py-5 text-muted">
+        Aucune commande pour le moment.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ Modal Ajout / Modification -->
+<div class="modal fade" #orderModal tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <form [formGroup]="addOrEditForm" (ngSubmit)="submit()">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            {{ isEdit ? 'Modifier Commande' : 'Ajouter une Commande' }}
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">N° Commande</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="orderNumber"
+                [class.is-invalid]="addOrEditForm.get('orderNumber')?.invalid && addOrEditForm.get('orderNumber')?.touched"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Client</label>
+              <select
+                class="form-select"
+                formControlName="clientId"
+                [class.is-invalid]="addOrEditForm.get('clientId')?.invalid && addOrEditForm.get('clientId')?.touched"
+              >
+                <option value="" disabled>Sélectionner un client</option>
+                <option *ngFor="let c of clients()" [value]="c.id">
+                  {{ c.firstName }} {{ c.lastName }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Statut</label>
+              <select class="form-select" formControlName="status">
+                <option *ngFor="let s of statusOptions" [value]="s">
+                  {{ statusLabel(s) }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <hr class="my-4" />
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="mb-0">Lignes de commande</h6>
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="addLine()">
+              <i class="bi bi-plus-circle"></i> Ajouter une ligne
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th style="min-width: 220px">Produit</th>
+                  <th style="width: 110px">Quantité</th>
+                  <th style="width: 150px">Prix Unitaire (DT)</th>
+                  <th style="width: 150px" class="text-end">Total ligne</th>
+                  <th style="width: 60px"></th>
+                </tr>
+              </thead>
+              <tbody formArrayName="orderLines">
+                <tr *ngFor="let line of orderLines.controls; let i = index" [formGroupName]="i">
+                  <td>
+                    <select
+                      class="form-select"
+                      formControlName="productId"
+                      (change)="onProductChange(i)"
+                      [class.is-invalid]="line.get('productId')?.invalid && line.get('productId')?.touched"
+                    >
+                      <option value="" disabled>Sélectionner un produit</option>
+                      <option *ngFor="let p of products()" [value]="p.id">
+                        {{ p.name }} ({{ p.reference }})
+                      </option>
+                    </select>
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      min="1"
+                      class="form-control"
+                      formControlName="quantity"
+                      [class.is-invalid]="line.get('quantity')?.invalid && line.get('quantity')?.touched"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      step="0.001"
+                      min="0"
+                      class="form-control"
+                      formControlName="unitPrice"
+                      [class.is-invalid]="line.get('unitPrice')?.invalid && line.get('unitPrice')?.touched"
+                    />
+                  </td>
+                  <td class="text-end">
+                    {{ lineTotal(i) | number:'1.3-3' }} DT
+                  </td>
+                  <td class="text-center">
+                    <button
+                      type="button"
+                      class="btn btn-sm btn-outline-danger"
+                      (click)="removeLine(i)"
+                      title="Supprimer la ligne"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="orderLines.length === 0">
+                  <td colspan="5" class="text-center text-muted py-3">
+                    Aucune ligne. Cliquez sur "Ajouter une ligne".
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <div class="text-end">
+              <div class="mb-1">
+                <span class="text-muted me-2">Total HT :</span>
+                <strong>{{ totalHT | number:'1.3-3' }} DT</strong>
+              </div>
+              <div>
+                <span class="text-muted me-2">Total TTC (19%) :</span>
+                <strong>{{ totalTTC | number:'1.3-3' }} DT</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Annuler
+          </button>
+          <button type="submit" class="btn btn-success" [disabled]="submitting()">
+            <span *ngIf="submitting()" class="spinner-border spinner-border-sm me-1"></span>
+            {{ isEdit ? 'Mettre à jour' : 'Ajouter Commande' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>  

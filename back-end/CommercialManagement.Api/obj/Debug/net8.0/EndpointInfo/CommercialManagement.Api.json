@@ -173,7 +173,7 @@
         }
       }
     },
-    "/api/Order": {
+    "/api/orders": {
       "get": {
         "tags": [
           "Order"
@@ -186,7 +186,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Order"
+                    "$ref": "#/components/schemas/OrderDto"
                   }
                 }
               },
@@ -194,7 +194,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Order"
+                    "$ref": "#/components/schemas/OrderDto"
                   }
                 }
               },
@@ -202,7 +202,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Order"
+                    "$ref": "#/components/schemas/OrderDto"
                   }
                 }
               }
@@ -218,17 +218,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Order"
+                "$ref": "#/components/schemas/OrderRequestDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Order"
+                "$ref": "#/components/schemas/OrderRequestDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Order"
+                "$ref": "#/components/schemas/OrderRequestDto"
               }
             }
           }
@@ -239,17 +239,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Order"
+                  "$ref": "#/components/schemas/OrderDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Order"
+                  "$ref": "#/components/schemas/OrderDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Order"
+                  "$ref": "#/components/schemas/OrderDto"
                 }
               }
             }
@@ -257,7 +257,7 @@
         }
       }
     },
-    "/api/Order/{id}": {
+    "/api/orders/{id}": {
       "get": {
         "tags": [
           "Order"
@@ -279,17 +279,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/Order"
+                  "$ref": "#/components/schemas/OrderDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Order"
+                  "$ref": "#/components/schemas/OrderDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Order"
+                  "$ref": "#/components/schemas/OrderDto"
                 }
               }
             }
@@ -315,17 +315,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Order"
+                "$ref": "#/components/schemas/OrderRequestDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Order"
+                "$ref": "#/components/schemas/OrderRequestDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Order"
+                "$ref": "#/components/schemas/OrderRequestDto"
               }
             }
           }
@@ -358,195 +358,10 @@
         }
       }
     },
-    "/api/Order/{id}/validate": {
+    "/api/orders/{id}/validate": {
       "post": {
         "tags": [
           "Order"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/OrderLine": {
-      "get": {
-        "tags": [
-          "OrderLine"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OrderLineDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OrderLineDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/OrderLineDto"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "OrderLine"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OrderLine"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OrderLine"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/OrderLine"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderLine"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderLine"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderLine"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/OrderLine/{id}": {
-      "get": {
-        "tags": [
-          "OrderLine"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderLineDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderLineDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OrderLineDto"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "OrderLine"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OrderLine"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OrderLine"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/OrderLine"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "OrderLine"
         ],
         "parameters": [
           {
@@ -792,7 +607,7 @@
         },
         "additionalProperties": false
       },
-      "Order": {
+      "OrderDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -802,10 +617,6 @@
           "orderNumber": {
             "type": "string",
             "nullable": true
-          },
-          "clientId": {
-            "type": "string",
-            "format": "uuid"
           },
           "orderDate": {
             "type": "string",
@@ -822,30 +633,74 @@
             "type": "number",
             "format": "double"
           },
-          "orderLines": {
+          "clientId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "rue": {
+            "type": "string",
+            "nullable": true
+          },
+          "ville": {
+            "type": "string",
+            "nullable": true
+          },
+          "codePostal": {
+            "type": "string",
+            "nullable": true
+          },
+          "pays": {
+            "type": "string",
+            "nullable": true
+          },
+          "lines": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/OrderLine"
+              "$ref": "#/components/schemas/OrderLineItemDto"
             },
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "OrderLine": {
+      "OrderLineItemDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
             "format": "uuid"
           },
-          "orderId": {
-            "type": "string",
-            "format": "uuid"
-          },
           "productId": {
             "type": "string",
             "format": "uuid"
+          },
+          "productReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "productName": {
+            "type": "string",
+            "nullable": true
           },
           "quantity": {
             "type": "integer",
@@ -859,119 +714,50 @@
             "type": "number",
             "format": "double",
             "readOnly": true
+          },
+          "productStockQuantity": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
       },
-      "OrderLineDto": {
+      "OrderLineRequestDto": {
         "type": "object",
         "properties": {
           "id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "productId": {
             "type": "string",
             "format": "uuid"
           },
           "quantity": {
             "type": "integer",
             "format": "int32"
-          },
-          "unitPrice": {
-            "type": "number",
-            "format": "double"
-          },
-          "totalLine": {
-            "type": "number",
-            "format": "double"
-          },
-          "orderId": {
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderRequestDto": {
+        "type": "object",
+        "properties": {
+          "clientId": {
             "type": "string",
             "format": "uuid"
-          },
-          "orderNumber": {
-            "type": "string",
-            "nullable": true
           },
           "orderDate": {
             "type": "string",
             "format": "date-time"
           },
-          "status": {
-            "$ref": "#/components/schemas/OrderStatus"
-          },
-          "totalHT": {
-            "type": "number",
-            "format": "double"
-          },
-          "totalTTC": {
-            "type": "number",
-            "format": "double"
-          },
-          "client_Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "client_LastName": {
-            "type": "string",
+          "lines": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderLineRequestDto"
+            },
             "nullable": true
-          },
-          "client_FirstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "client_Email": {
-            "type": "string",
-            "nullable": true
-          },
-          "client_Phone": {
-            "type": "string",
-            "nullable": true
-          },
-          "client_Created": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "adresse_Rue": {
-            "type": "string",
-            "nullable": true
-          },
-          "adresse_Ville": {
-            "type": "string",
-            "nullable": true
-          },
-          "adresse_CodePostal": {
-            "type": "string",
-            "nullable": true
-          },
-          "adresse_Pays": {
-            "type": "string",
-            "nullable": true
-          },
-          "product_Id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "product_Reference": {
-            "type": "string",
-            "nullable": true
-          },
-          "product_Name": {
-            "type": "string",
-            "nullable": true
-          },
-          "product_Description": {
-            "type": "string",
-            "nullable": true
-          },
-          "product_UnitPriceHT": {
-            "type": "number",
-            "format": "double"
-          },
-          "product_StockQuantity": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "product_Created": {
-            "type": "string",
-            "format": "date-time"
           }
         },
         "additionalProperties": false

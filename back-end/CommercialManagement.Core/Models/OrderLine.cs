@@ -1,10 +1,6 @@
-﻿using CommercialManagement.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace CommercialManagement.Core.Models
 {
@@ -14,20 +10,13 @@ namespace CommercialManagement.Core.Models
         public Guid OrderId { get; set; }
         public Guid ProductId { get; set; }
 
-        private int _quantity;
-        public int Quantity
-        {
-            get => _quantity;
-            set
-            {
-                if (value <= 0)
-                    throw new ArgumentException("La quantité doit être supérieure à 0.");
-                _quantity = value;
-            }
-        }
+        [Range(1, int.MaxValue, ErrorMessage = "La quantité doit être supérieure à 0.")]
+        public int Quantity { get; set; }
 
         public decimal UnitPrice { get; set; }
-        public decimal TotalLine => Quantity * UnitPrice;   // Calcul automatique
+
+        // Calcul automatique du total de la ligne (Quantité × Prix unitaire)
+        public decimal TotalLine => Quantity * UnitPrice;
 
         [JsonIgnore]
         public Order? Order { get; set; }

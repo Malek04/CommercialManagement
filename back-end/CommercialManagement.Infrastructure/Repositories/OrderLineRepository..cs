@@ -4,7 +4,7 @@ using CommercialManagement.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace CommercialManagement.Infrastructure.Repositories
 {
@@ -38,23 +38,23 @@ namespace CommercialManagement.Infrastructure.Repositories
         public OrderLine? GetOrderLineById(Guid id)
         {
             return _context.OrderLines
-                           .Include(ol => ol.Order)                    // Charge l'Order
-                               .ThenInclude(o => o!.Client)            // Charge le Client
-                                   .ThenInclude(c => c!.Adresse)       // Charge l'Adresse
-                           .Include(ol => ol.Product)                  // Charge le Product
-                           .AsNoTracking()
-                           .FirstOrDefault(ol => ol.Id == id);
+                .Include(ol => ol.Order)
+                    .ThenInclude(o => o!.Client)
+                        .ThenInclude(c => c!.Adresse)
+                .Include(ol => ol.Product)
+                .AsNoTracking()
+                .FirstOrDefault(ol => ol.Id == id);
         }
 
         public IEnumerable<OrderLine> GetOrderLine()
         {
             return _context.OrderLines
-                           .Include(ol => ol.Order)
-                               .ThenInclude(o => o!.Client)
-                                   .ThenInclude(c => c!.Adresse)
-                           .Include(ol => ol.Product)
-                           .AsNoTracking()
-                           .ToList();
+                .Include(ol => ol.Order)
+                    .ThenInclude(o => o!.Client)
+                        .ThenInclude(c => c!.Adresse)
+                .Include(ol => ol.Product)
+                .AsNoTracking()
+                .ToList();
         }
     }
 }

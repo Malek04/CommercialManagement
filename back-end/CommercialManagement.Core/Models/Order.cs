@@ -2,9 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace CommercialManagement.Core.Models
 {
@@ -20,17 +18,23 @@ namespace CommercialManagement.Core.Models
         public decimal TotalHT { get; set; }
         public decimal TotalTTC { get; set; }
 
+        // TVA fixe à 19% 
+        private const decimal VatRate = 1.19m;
+
         [JsonIgnore]
         public Client? Client { get; set; }
 
         public ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
 
-        // Méthode de calcul des totaux
+        /// <summary>
+        /// Calcul pur des totaux à partir des lignes existantes.
+        /// Ne contient aucune règle de gestion (stock, statut...) : ces règles
+        /// vivent dans IOrderService pour rester testables et centralisées.
+        /// </summary>
         public void CalculateTotals()
         {
             TotalHT = OrderLines.Sum(ol => ol.TotalLine);
-            TotalTTC = TotalHT * 1.19m;
+            TotalTTC = TotalHT * VatRate;
         }
-
     }
 }

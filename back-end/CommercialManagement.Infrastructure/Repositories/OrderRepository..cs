@@ -2,6 +2,9 @@
 using CommercialManagement.Core.Models;
 using CommercialManagement.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CommercialManagement.Infrastructure.Repositories
 {
@@ -14,13 +17,13 @@ namespace CommercialManagement.Infrastructure.Repositories
             _context = context;
         }
 
-
         public IEnumerable<Order> GetOrder()
         {
             return _context.Orders
                 .Include(o => o.Client)
-                .Include(o => o.OrderLines)           // ← Ajout important
-                .ThenInclude(ol => ol.Product)
+                    .ThenInclude(c => c!.Adresse)
+                .Include(o => o.OrderLines)
+                    .ThenInclude(ol => ol.Product)
                 .AsNoTracking()
                 .OrderByDescending(o => o.OrderDate)
                 .ToList();
@@ -30,11 +33,11 @@ namespace CommercialManagement.Infrastructure.Repositories
         {
             return _context.Orders
                 .Include(o => o.Client)
+                    .ThenInclude(c => c!.Adresse)
                 .Include(o => o.OrderLines)
                     .ThenInclude(ol => ol.Product)
                 .FirstOrDefault(o => o.Id == id);
         }
-
 
         public void AddOrder(Order order)
         {
@@ -42,13 +45,11 @@ namespace CommercialManagement.Infrastructure.Repositories
             _context.SaveChanges();
         }
 
-
         public void UpdateOrder(Order order)
         {
             _context.Orders.Update(order);
             _context.SaveChanges();
         }
-
 
         public void DeleteOrder(Order order)
         {
