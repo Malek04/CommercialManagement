@@ -11,17 +11,24 @@ namespace CommercialManagement.Core.Models
     public class OrderLine
     {
         public Guid Id { get; set; }
-
         public Guid OrderId { get; set; }
-
         public Guid ProductId { get; set; }
 
-        public int Quantity { get; set; }
+        private int _quantity;
+        public int Quantity
+        {
+            get => _quantity;
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentException("La quantité doit être supérieure à 0.");
+                _quantity = value;
+            }
+        }
 
         public decimal UnitPrice { get; set; }
+        public decimal TotalLine => Quantity * UnitPrice;   // Calcul automatique
 
-        public decimal TotalLine { get; set; }
-        //navigation property
         [JsonIgnore]
         public Order? Order { get; set; }
         [JsonIgnore]

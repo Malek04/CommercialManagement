@@ -108,7 +108,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CommercialManagement.Core.DTOs.OrderDto, CommercialManagement.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CommercialManagement.Core.Models.Order, CommercialManagement.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -160,7 +160,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CommercialManagement.Core.DTOs.OrderDto",
+        "Type": "CommercialManagement.Core.Models.Order",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -208,6 +208,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CommercialManagement.Api.Controllers.OrderController",
+    "Method": "ValidateOrder",
+    "RelativePath": "api/Order/{id}/validate",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CommercialManagement.Api.Controllers.OrderLineController",
     "Method": "GetOrderLines",
     "RelativePath": "api/OrderLine",
@@ -217,7 +233,7 @@
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[CommercialManagement.Core.DTOs.OderLineDto, CommercialManagement.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CommercialManagement.Core.DTOs.OrderLineDto, CommercialManagement.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -269,7 +285,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "CommercialManagement.Core.DTOs.OderLineDto",
+        "Type": "CommercialManagement.Core.DTOs.OrderLineDto",
         "MediaTypes": [
           "text/plain",
           "application/json",

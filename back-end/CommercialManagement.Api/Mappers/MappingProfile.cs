@@ -21,7 +21,7 @@ namespace CommercialManagement.Api.Mappers
         .ForMember(d => d.Pays, i => i.MapFrom(src => src.Client.Adresse.Pays))
         .ReverseMap();
 
-        CreateMap<OrderLine, OderLineDto>()
+        CreateMap<OrderLine, OrderLineDto>()
         .ForMember(d => d.OrderId, i => i.MapFrom(src => src.Order.Id))
         .ForMember(d => d.OrderNumber, i => i.MapFrom(src => src.Order.OrderNumber))
         .ForMember(d => d.OrderDate, i => i.MapFrom(src => src.Order.OrderDate))

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CommercialManagement.Core.DTOs
 {
-    public class OderLineDto
+    public class OrderLineDto
     {
         //orderLine
         public Guid Id { get; set; }

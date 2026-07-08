@@ -18,18 +18,21 @@ namespace CommercialManagement.Infrastructure.Repositories
         public IEnumerable<Order> GetOrder()
         {
             return _context.Orders
-                           .Include(o => o.Client)
-                           .AsNoTracking()
-                           .OrderByDescending(o => o.OrderDate)
-                           .ToList();
+                .Include(o => o.Client)
+                .Include(o => o.OrderLines)           // ← Ajout important
+                .ThenInclude(ol => ol.Product)
+                .AsNoTracking()
+                .OrderByDescending(o => o.OrderDate)
+                .ToList();
         }
-
 
         public Order? GetOrderById(Guid id)
         {
             return _context.Orders
-                           .Include(o => o.Client)
-                           .FirstOrDefault(o => o.Id == id);
+                .Include(o => o.Client)
+                .Include(o => o.OrderLines)
+                    .ThenInclude(ol => ol.Product)
+                .FirstOrDefault(o => o.Id == id);
         }
 
 
