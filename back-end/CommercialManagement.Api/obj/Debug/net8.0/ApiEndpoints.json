@@ -208,6 +208,115 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CommercialManagement.Api.Controllers.OrderLineController",
+    "Method": "GetOrderLines",
+    "RelativePath": "api/OrderLine",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[CommercialManagement.Core.DTOs.OderLineDto, CommercialManagement.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CommercialManagement.Api.Controllers.OrderLineController",
+    "Method": "CreateOrderLine",
+    "RelativePath": "api/OrderLine",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderLineInput",
+        "Type": "CommercialManagement.Core.Models.OrderLine",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CommercialManagement.Core.Models.OrderLine",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CommercialManagement.Api.Controllers.OrderLineController",
+    "Method": "GetOrderLineById",
+    "RelativePath": "api/OrderLine/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "CommercialManagement.Core.DTOs.OderLineDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "CommercialManagement.Api.Controllers.OrderLineController",
+    "Method": "UpdateOrderLine",
+    "RelativePath": "api/OrderLine/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "orderLine",
+        "Type": "CommercialManagement.Core.Models.OrderLine",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CommercialManagement.Api.Controllers.OrderLineController",
+    "Method": "DeleteOrderLine",
+    "RelativePath": "api/OrderLine/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CommercialManagement.Api.Controllers.ProductController",
     "Method": "GetProducts",
     "RelativePath": "api/Product",
