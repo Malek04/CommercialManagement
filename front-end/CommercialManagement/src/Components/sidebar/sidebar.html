@@ -1,45 +1,65 @@
-<div class="sidebar">
+<div class="sidebar d-flex flex-column">
+
   <!-- Header -->
-  <div class="sidebar-header">
-    <h3>FMC Digital</h3>
-    <p>Gestion Commerciale</p>
+  <div class="sidebar-header text-center py-4 px-3">
+    <div class="logo-circle mx-auto mb-2">
+      <i class="fas fa-chart-line"></i>
+    </div>
+    <h3 class="mb-0 fw-bold">FMC Digital</h3>
+    <p class="mb-0 small opacity-75">Gestion Commerciale</p>
   </div>
 
+  <hr class="sidebar-divider mx-3 my-2" />
+
   <!-- Menu -->
-  <nav class="sidebar-menu">
-    <a routerLink="/dashboard" 
-       routerLinkActive="active" 
-       class="menu-item">
+  <nav class="sidebar-menu flex-grow-1 px-3">
+    <a routerLink="/dashboard"
+       routerLinkActive="active"
+       class="menu-item d-flex align-items-center gap-3 px-3 py-2 mb-1 rounded-3 text-decoration-none">
       <i class="fas fa-home"></i>
       <span>Dashboard</span>
     </a>
 
-    <a routerLink="clients" 
-       routerLinkActive="active" 
-       class="menu-item">
+    <a routerLink="clients"
+       routerLinkActive="active"
+       class="menu-item d-flex align-items-center gap-3 px-3 py-2 mb-1 rounded-3 text-decoration-none">
       <i class="fas fa-users"></i>
       <span>Clients</span>
     </a>
 
-    <a routerLink="/products" 
-       routerLinkActive="active" 
-       class="menu-item">
+    <a routerLink="/products"
+       routerLinkActive="active"
+       class="menu-item d-flex align-items-center gap-3 px-3 py-2 mb-1 rounded-3 text-decoration-none">
       <i class="fas fa-box"></i>
       <span>Produits</span>
     </a>
 
-    <a routerLink="/orders" 
-       routerLinkActive="active" 
-       class="menu-item">
+    <a routerLink="/orders"
+       routerLinkActive="active"
+       class="menu-item d-flex align-items-center gap-3 px-3 py-2 mb-1 rounded-3 text-decoration-none">
       <i class="fas fa-shopping-cart"></i>
       <span>Commandes</span>
     </a>
 
-    <a routerLink="/order-lines" 
-       routerLinkActive="active" 
-       class="menu-item">
+    <a routerLink="/order-lines"
+       routerLinkActive="active"
+       class="menu-item d-flex align-items-center gap-3 px-3 py-2 mb-1 rounded-3 text-decoration-none">
       <i class="fas fa-plus-circle"></i>
       <span>OrderLines</span>
     </a>
   </nav>
+
+  <!-- Footer (optionnel) -->
+  <div class="sidebar-footer px-3 py-3">
+    <hr class="sidebar-divider mx-0 my-2" />
+    <div class="d-flex align-items-center gap-2 px-2 py-2 rounded-3 user-box">
+      <div class="user-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="small">
+        <div class="fw-semibold">Admin</div>
+        <div class="opacity-75" style="font-size: 0.75rem;">Connecté</div>
+      </div>
+    </div>
+  </div>
 </div>
