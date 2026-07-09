@@ -40,9 +40,9 @@ CommercialManagement
 └── Front-end
     └── CommercialManagement
         ├── Components
-        ├── Services
-        ├── Models
-        └── Pages
+        ├── Core
+            ├── Services
+            └── Models
 ```
 
 ---
