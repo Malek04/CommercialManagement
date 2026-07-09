@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, signal } from 
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Order as OrderModel } from '../../Core/Models/order';
+import { OrderRequest, OrderLineRequest } from '../../Core/Models/order-request';
 import { OrderService } from '../../Core/Services/order-service';
 import { ClientService } from '../../Core/Services/client-serivce';
 import { ProductService } from '../../Core/Services/product-service';
@@ -10,6 +11,7 @@ import { Product as ProductModel } from '../../Core/Models/product';
 import { OrderStatus, OrderStatusLabels } from '../../Core/Enums/order-status';
 import Swal from 'sweetalert2';
 import { Modal } from 'bootstrap';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-order',
@@ -33,9 +35,7 @@ export class Order implements OnInit, AfterViewInit {
   submitting = signal(false);
   dataLoaded = signal(false);
 
-  statusOptions = Object.values(OrderStatus).filter(
-    (v) => typeof v === 'number'
-  ) as number[];
+  OrderStatus = OrderStatus; // exposed for template comparisons
   statusLabels = OrderStatusLabels;
 
   constructor(
@@ -57,12 +57,11 @@ export class Order implements OnInit, AfterViewInit {
   }
 
   private initForm(): void {
+    // orderNumber and status are server-controlled: number is generated,
+    // status starts at Draft and only changes via validate/cancel endpoints.
     this.addOrEditForm = this.fb.group({
-      id: ['00000000-0000-0000-0000-000000000000'],
-      orderNumber: ['', Validators.required],
       clientId: ['', Validators.required],
       orderDate: [new Date().toISOString(), Validators.required],
-      status: [OrderStatus.Draft, Validators.required],
       orderLines: this.fb.array([]),
     });
   }
@@ -73,10 +72,12 @@ export class Order implements OnInit, AfterViewInit {
 
   private createOrderLine(line?: any): FormGroup {
     return this.fb.group({
-      id: [line?.id || '00000000-0000-0000-0000-000000000000'],
+      id: [line?.id || null],
       productId: [line?.productId || '', Validators.required],
       quantity: [line?.quantity || 1, [Validators.required, Validators.min(1)]],
-      unitPrice: [line?.unitPrice || 0, [Validators.required, Validators.min(0)]],
+      // unitPrice is display-only: always resynced from the selected
+      // product, never sent to the server.
+      unitPrice: [{ value: line?.unitPrice || 0, disabled: true }],
     });
   }
 
@@ -88,7 +89,6 @@ export class Order implements OnInit, AfterViewInit {
     this.orderLines.removeAt(index);
   }
 
-  // Auto-fill unit price when a product is selected on a line
   onProductChange(index: number): void {
     const lineGroup = this.orderLines.at(index) as FormGroup;
     const productId = lineGroup.get('productId')?.value;
@@ -99,13 +99,13 @@ export class Order implements OnInit, AfterViewInit {
   }
 
   lineTotal(index: number): number {
-    const line = this.orderLines.at(index).value;
+    const line = this.orderLines.at(index).getRawValue();
     return (line.quantity || 0) * (line.unitPrice || 0);
   }
 
   get totalHT(): number {
     return this.orderLines.controls.reduce((sum, ctrl) => {
-      const v = ctrl.value;
+      const v = (ctrl as FormGroup).getRawValue();
       return sum + (v.quantity || 0) * (v.unitPrice || 0);
     }, 0);
   }
@@ -128,11 +128,7 @@ export class Order implements OnInit, AfterViewInit {
         this.loading.set(false);
         this.dataLoaded.set(true);
         console.error('❌ Error loading orders:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: 'Impossible de charger la liste des commandes.',
-        });
+        Swal.fire({ icon: 'error', title: 'Erreur', text: 'Impossible de charger la liste des commandes.' });
       },
     });
   }
@@ -156,38 +152,54 @@ export class Order implements OnInit, AfterViewInit {
     return c ? `${c.firstName} ${c.lastName}` : '-';
   }
 
-  productName(productId: string): string {
-    const p = this.products().find((p) => p.id === productId);
-    return p ? p.name || '-' : '-';
-  }
-
   statusLabel(status: number): string {
     return this.statusLabels[status] || String(status);
+  }
+
+  isValidated(order: OrderModel): boolean {
+    return order.status === OrderStatus.Validated;
+  }
+
+  isCancelled(order: OrderModel): boolean {
+    return order.status === OrderStatus.Cancelled;
+  }
+
+  // Draft is the only status where edit/delete/validate/cancel are all allowed
+  isDraft(order: OrderModel): boolean {
+    return order.status === OrderStatus.Draft;
   }
 
   openAddModal(): void {
     this.isEdit = false;
     this.selectedId = '';
     this.resetForm();
-    this.addLine(); // start with one empty line
+    this.addLine();
     this.modalInstance.show();
   }
 
   openEditModal(order: OrderModel): void {
+    if (!this.isDraft(order)) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Modification impossible',
+        text: 'Seules les commandes en brouillon peuvent être modifiées.',
+      });
+      return;
+    }
+
     this.isEdit = true;
     this.selectedId = order.id;
 
     this.orderLines.clear();
-    (order.orderLines || []).forEach((line) => {
+    (order.lines || []).forEach((line) => {
       this.orderLines.push(this.createOrderLine(line));
     });
 
     this.addOrEditForm.patchValue({
-      id: order.id,
-      orderNumber: order.orderNumber,
       clientId: order.clientId,
-      orderDate: order.orderDate,
-      status: order.status,
+      orderDate: order.orderDate 
+    ? new Date(order.orderDate).toISOString().substring(0, 10)
+    : ''
     });
 
     this.modalInstance.show();
@@ -198,81 +210,121 @@ export class Order implements OnInit, AfterViewInit {
   }
 
   submit(): void {
-    if (this.addOrEditForm.invalid || this.orderLines.length === 0) {
-      this.addOrEditForm.markAllAsTouched();
+  if (this.addOrEditForm.invalid || this.orderLines.length === 0) {
+    this.addOrEditForm.markAllAsTouched();
+    Swal.fire({
+      icon: 'warning',
+      title: 'Formulaire incomplet',
+      text:
+        this.orderLines.length === 0
+          ? 'Ajoutez au moins une ligne de commande.'
+          : 'Merci de remplir correctement tous les champs obligatoires.',
+    });
+    return;
+  }
+
+  this.submitting.set(true);
+
+  const raw = this.addOrEditForm.getRawValue();
+  const payload: OrderRequest = {
+    clientId: raw.clientId,
+    orderDate: raw.orderDate,
+    lines: raw.orderLines.map((l: any): OrderLineRequest => ({
+      id: l.id || undefined,
+      productId: l.productId,
+      quantity: l.quantity,
+    })),
+  };
+
+  // Explicit Observable<any> avoids TS trying to unify two different
+  // subscribe() overload sets from Observable<Order> vs Observable<void>.
+  const request$: Observable<any> = this.isEdit
+    ? this.orderService.update(this.selectedId, payload)
+    : this.orderService.post(payload);
+
+  request$.subscribe({
+    next: () => {
+      this.submitting.set(false);
+      this.closeModal();
+      this.loadOrders();
+      this.resetForm();
       Swal.fire({
-        icon: 'warning',
-        title: 'Formulaire incomplet',
-        text:
-          this.orderLines.length === 0
-            ? 'Ajoutez au moins une ligne de commande.'
-            : 'Merci de remplir correctement tous les champs obligatoires.',
+        icon: 'success',
+        title: this.isEdit ? 'Commande mise à jour' : 'Commande ajoutée',
+        text: this.isEdit
+          ? 'Les informations ont été mises à jour avec succès.'
+          : 'La commande a été ajoutée avec succès.',
+        timer: 2000,
+        showConfirmButton: false,
       });
-      return;
-    }
+    },
+    error: (err: any) => {
+      this.submitting.set(false);
+      console.error('❌ Save failed:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: err?.error?.Message || err?.error?.message || 'Une erreur est survenue.',
+      });
+    },
+  });
+}
 
-    this.submitting.set(true);
+  validateOrder(id: string): void {
+    Swal.fire({
+      icon: 'question',
+      title: 'Valider cette commande ?',
+      text: 'Le stock sera déduit et la commande ne pourra plus être modifiée.',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, valider',
+      cancelButtonText: 'Annuler',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
 
-    // Include live-calculated totals since the backend model expects them
-    const formValue = {
-      ...this.addOrEditForm.value,
-      totalHT: this.totalHT,
-      totalTTC: this.totalTTC,
-    };
-
-    if (this.isEdit) {
-      this.orderService.update(this.selectedId, formValue).subscribe({
+      this.orderService.validate(id).subscribe({
         next: () => {
-          this.submitting.set(false);
-          this.closeModal();
           this.loadOrders();
-          this.resetForm();
-          Swal.fire({
-            icon: 'success',
-            title: 'Commande mise à jour',
-            text: 'Les informations ont été mises à jour avec succès.',
-            timer: 2000,
-            showConfirmButton: false,
-          });
+          Swal.fire({ icon: 'success', title: 'Commande validée', timer: 1500, showConfirmButton: false });
         },
         error: (err: any) => {
-          this.submitting.set(false);
-          console.error('❌ Update failed:', err);
-          console.error('❌ Validation details:', err?.error);
+          console.error('❌ Validate failed:', err);
           Swal.fire({
             icon: 'error',
             title: 'Erreur',
-            text: err?.error?.message || 'Une erreur est survenue lors de la mise à jour de la commande.',
+            text: err?.error?.Message || err?.error?.message || 'Impossible de valider cette commande.',
           });
         },
       });
-    } else {
-      this.orderService.post(formValue).subscribe({
+    });
+  }
+
+  cancelOrder(id: string): void {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Annuler cette commande ?',
+      text: 'Cette action ne peut pas être annulée une fois faite.',
+      showCancelButton: true,
+      confirmButtonText: "Oui, annuler la commande",
+      cancelButtonText: 'Retour',
+      confirmButtonColor: '#dc3545',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      this.orderService.cancel(id).subscribe({
         next: () => {
-          this.submitting.set(false);
-          this.closeModal();
           this.loadOrders();
-          this.resetForm();
-          Swal.fire({
-            icon: 'success',
-            title: 'Commande ajoutée',
-            text: 'La commande a été ajoutée avec succès.',
-            timer: 2000,
-            showConfirmButton: false,
-          });
+          Swal.fire({ icon: 'success', title: 'Commande annulée', timer: 1500, showConfirmButton: false });
         },
         error: (err: any) => {
-          this.submitting.set(false);
-          console.error('❌ Add failed:', err);
-          console.error('❌ Validation details:', err?.error);
+          console.error('❌ Cancel failed:', err);
           Swal.fire({
             icon: 'error',
             title: 'Erreur',
-            text: err?.error?.message || "Une erreur est survenue lors de l'ajout de la commande.",
+            text: err?.error?.Message || err?.error?.message || "Impossible d'annuler cette commande.",
           });
         },
       });
-    }
+    });
   }
 
   delete(id: string): void {
@@ -289,21 +341,11 @@ export class Order implements OnInit, AfterViewInit {
         this.orderService.delete(id).subscribe({
           next: () => {
             this.loadOrders();
-            Swal.fire({
-              icon: 'success',
-              title: 'Supprimée',
-              text: 'La commande a été supprimée.',
-              timer: 1500,
-              showConfirmButton: false,
-            });
+            Swal.fire({ icon: 'success', title: 'Supprimée', timer: 1500, showConfirmButton: false });
           },
           error: (err: any) => {
             console.error('Delete error:', err);
-            Swal.fire({
-              icon: 'error',
-              title: 'Erreur',
-              text: 'Impossible de supprimer cette commande.',
-            });
+            Swal.fire({ icon: 'error', title: 'Erreur', text: 'Impossible de supprimer cette commande.' });
           },
         });
       }
@@ -313,9 +355,8 @@ export class Order implements OnInit, AfterViewInit {
   resetForm(): void {
     this.orderLines.clear();
     this.addOrEditForm.reset({
-      id: '00000000-0000-0000-0000-000000000000',
+      clientId: '',
       orderDate: new Date().toISOString(),
-      status: OrderStatus.Draft,
     });
   }
 

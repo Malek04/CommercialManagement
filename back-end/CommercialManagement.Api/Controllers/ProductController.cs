@@ -45,6 +45,9 @@ namespace CommercialManagement.Api.Controllers
             if (string.IsNullOrWhiteSpace(product.Name))
                 return BadRequest("Le nom du produit est obligatoire.");
 
+            // Generate the reference server-side on creation
+            product.Reference = $"REF-{DateTime.UtcNow:yyyyMMddHHmmss}";
+
             _productRepository.AddProduct(product);
 
             return CreatedAtAction(
@@ -68,11 +71,9 @@ namespace CommercialManagement.Api.Controllers
             if (existingProduct == null)
                 return NotFound(new { Message = $"Product with id {id} not found." });
 
-
             // Update Product properties
             existingProduct.Name = product.Name;
             existingProduct.Description = product.Description;
-            existingProduct.Reference = product.Reference;
             existingProduct.UnitPriceHT = product.UnitPriceHT;
             existingProduct.StockQuantity = product.StockQuantity;
 

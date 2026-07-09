@@ -42,7 +42,6 @@ export class Product implements OnInit, AfterViewInit {
   private initForm(): void {
     this.addOrEditForm = this.fb.group({
       id: ['00000000-0000-0000-0000-000000000000'],
-      reference: ['', Validators.required],
       name: ['', [Validators.required, Validators.minLength(2)]],
       description: [''],
       unitPriceHT: [0, [Validators.required, Validators.min(0)]],

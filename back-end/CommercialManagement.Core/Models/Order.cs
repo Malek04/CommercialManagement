@@ -26,11 +26,6 @@ namespace CommercialManagement.Core.Models
 
         public ICollection<OrderLine> OrderLines { get; set; } = new List<OrderLine>();
 
-        /// <summary>
-        /// Calcul pur des totaux à partir des lignes existantes.
-        /// Ne contient aucune règle de gestion (stock, statut...) : ces règles
-        /// vivent dans IOrderService pour rester testables et centralisées.
-        /// </summary>
         public void CalculateTotals()
         {
             TotalHT = OrderLines.Sum(ol => ol.TotalLine);

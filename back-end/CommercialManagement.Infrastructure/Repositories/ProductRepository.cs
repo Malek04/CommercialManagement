@@ -1,12 +1,6 @@
 ﻿using CommercialManagement.Core.IRepositories;
 using CommercialManagement.Core.Models;
 using CommercialManagement.Infrastructure.Context;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CommercialManagement.Infrastructure.Repositories
 {
@@ -18,10 +12,10 @@ namespace CommercialManagement.Infrastructure.Repositories
         {
             _context = context;
         }
+
         public IEnumerable<Product> GetProduct()
         {
             return _context.Products
-                           .AsNoTracking()
                            .OrderByDescending(p => p.Created)
                            .ToList();
         }
@@ -29,8 +23,7 @@ namespace CommercialManagement.Infrastructure.Repositories
         public Product? GetProductById(Guid id)
         {
             return _context.Products
-                           .AsNoTracking()
-                           .FirstOrDefault(c => c.Id == id);
+                           .FirstOrDefault(p => p.Id == id);
         }
 
         public void AddProduct(Product product)

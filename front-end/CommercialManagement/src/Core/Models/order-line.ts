@@ -1,9 +1,10 @@
 export class OrderLine {
-    id!: string;
-    orderId!: string;
-    productId!: string;
-    quantity!: number;
-    unitPrice!: number;
-    totalLine!: number;
-    productName?: string;
+  id!: string;
+  productId!: string;
+  productReference?: string;
+  productName?: string;
+  quantity!: number;
+  unitPrice!: number;
+  totalLine!: number;
+  productStockQuantity!: number;
 }

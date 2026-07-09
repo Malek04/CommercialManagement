@@ -15,8 +15,7 @@ namespace CommercialManagement.Core.Models
 
         public decimal UnitPrice { get; set; }
 
-        // Calcul automatique du total de la ligne (Quantité × Prix unitaire)
-        public decimal TotalLine => Quantity * UnitPrice;
+        public decimal TotalLine { get; set; }
 
         [JsonIgnore]
         public Order? Order { get; set; }

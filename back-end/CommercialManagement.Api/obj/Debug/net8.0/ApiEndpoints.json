@@ -209,6 +209,22 @@
   },
   {
     "ContainingType": "CommercialManagement.Api.Controllers.OrderController",
+    "Method": "CancelOrder",
+    "RelativePath": "api/orders/{id}/cancel",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CommercialManagement.Api.Controllers.OrderController",
     "Method": "ValidateOrder",
     "RelativePath": "api/orders/{id}/validate",
     "HttpMethod": "POST",

@@ -7,7 +7,6 @@
     </button>
   </div>
 
-  <!-- List -->
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center">
       <h5>Liste des Commandes</h5>
@@ -18,7 +17,6 @@
     </div>
     <div class="card-body p-0">
 
-      <!-- Loading state -->
       <div *ngIf="loading()" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
           <span class="visually-hidden">Chargement...</span>
@@ -26,7 +24,6 @@
         <p class="mt-2 text-muted">Chargement des commandes...</p>
       </div>
 
-      <!-- Table -->
       <table class="table table-hover mb-0" *ngIf="!loading() && dataLoaded() && orders().length > 0">
         <thead class="table-light">
           <tr>
@@ -42,22 +39,38 @@
         <tbody>
           <tr *ngFor="let o of orders(); trackBy: trackById">
             <td>{{ o.orderNumber }}</td>
-            <td>{{ o.clientName || clientName(o.clientId) }}</td>
+            <td>{{ o.firstName }} {{ o.lastName }}</td>
             <td>{{ o.orderDate | date:'dd/MM/yyyy' }}</td>
             <td>
-              <span class="badge bg-secondary">{{ statusLabel(o.status) }}</span>
+              <span
+                class="badge"
+                [class.bg-secondary]="o.status === OrderStatus.Draft"
+                [class.bg-success]="o.status === OrderStatus.Validated"
+                [class.bg-danger]="o.status === OrderStatus.Cancelled"
+              >
+                {{ statusLabel(o.status) }}
+              </span>
             </td>
             <td class="text-end">{{ o.totalHT | number:'1.3-3' }} DT</td>
             <td class="text-end">{{ o.totalTTC | number:'1.3-3' }} DT</td>
             <td class="text-end">
-              <button class="btn btn-sm btn-warning me-2" (click)="openEditModal(o)">Modifier</button>
-              <button class="btn btn-sm btn-danger" (click)="delete(o.id)">Supprimer</button>
+              <button class="btn btn-sm btn-success me-2" *ngIf="isDraft(o)" (click)="validateOrder(o.id)">
+                Valider
+              </button>
+              <button class="btn btn-sm btn-outline-danger me-2" *ngIf="isDraft(o)" (click)="cancelOrder(o.id)">
+                Annuler
+              </button>
+              <button class="btn btn-sm btn-warning me-2" [disabled]="!isDraft(o)" (click)="openEditModal(o)">
+                Modifier
+              </button>
+              <button class="btn btn-sm btn-danger" [disabled]="!isDraft(o)" (click)="delete(o.id)">
+                Supprimer
+              </button>
             </td>
           </tr>
         </tbody>
       </table>
 
-      <!-- Empty State -->
       <div *ngIf="!loading() && dataLoaded() && orders().length === 0" class="text-center py-5 text-muted">
         Aucune commande pour le moment.
       </div>
@@ -65,7 +78,6 @@
   </div>
 </div>
 
-<!-- ✅ Modal Ajout / Modification -->
 <div class="modal fade" #orderModal tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
@@ -79,16 +91,7 @@
 
         <div class="modal-body">
           <div class="row g-3">
-            <div class="col-md-4">
-              <label class="form-label">N° Commande</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="orderNumber"
-                [class.is-invalid]="addOrEditForm.get('orderNumber')?.invalid && addOrEditForm.get('orderNumber')?.touched"
-              />
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
               <label class="form-label">Client</label>
               <select
                 class="form-select"
@@ -101,13 +104,9 @@
                 </option>
               </select>
             </div>
-            <div class="col-md-4">
-              <label class="form-label">Statut</label>
-              <select class="form-select" formControlName="status">
-                <option *ngFor="let s of statusOptions" [value]="s">
-                  {{ statusLabel(s) }}
-                </option>
-              </select>
+            <div class="col-md-6">
+              <label class="form-label">Date</label>
+              <input type="date" class="form-control" formControlName="orderDate" />
             </div>
           </div>
 
@@ -156,14 +155,7 @@
                     />
                   </td>
                   <td>
-                    <input
-                      type="number"
-                      step="0.001"
-                      min="0"
-                      class="form-control"
-                      formControlName="unitPrice"
-                      [class.is-invalid]="line.get('unitPrice')?.invalid && line.get('unitPrice')?.touched"
-                    />
+                    <input type="number" step="0.001" class="form-control" formControlName="unitPrice" readonly />
                   </td>
                   <td class="text-end">
                     {{ lineTotal(i) | number:'1.3-3' }} DT
@@ -203,9 +195,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            Annuler
-          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
           <button type="submit" class="btn btn-success" [disabled]="submitting()">
             <span *ngIf="submitting()" class="spinner-border spinner-border-sm me-1"></span>
             {{ isEdit ? 'Mettre à jour' : 'Ajouter Commande' }}
@@ -214,4 +204,4 @@
       </form>
     </div>
   </div>
-</div>  
+</div>

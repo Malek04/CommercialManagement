@@ -4,11 +4,24 @@ import { OrderLine } from '../Models/order-line';
 export class Order {
   id!: string;
   orderNumber?: string;
-  clientId!: string;
   orderDate: Date = new Date();
   status: OrderStatus = OrderStatus.Draft;
   totalHT!: number;
   totalTTC!: number;
-  orderLines: OrderLine[] = [];
-  clientName?: string;
+
+  // Client
+  clientId!: string;
+  lastName?: string;
+  firstName?: string;
+  email?: string;
+  phone?: string;
+  created!: Date;
+
+  // Address
+  rue?: string;
+  ville?: string;
+  codePostal?: string;
+  pays?: string;
+
+  lines: OrderLine[] = [];
 }
