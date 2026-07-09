@@ -19,8 +19,12 @@ export class Product implements OnInit, AfterViewInit {
 
   products = signal<ProductModel[]>([]);
   addOrEditForm!: FormGroup;
+  
   isEdit = false;
+  isView = false;       
   selectedId = '';
+  selectedProduct: ProductModel | null = null;
+
   loading = signal(false);
   submitting = signal(false);
   dataLoaded = signal(false);
@@ -42,6 +46,7 @@ export class Product implements OnInit, AfterViewInit {
   private initForm(): void {
     this.addOrEditForm = this.fb.group({
       id: ['00000000-0000-0000-0000-000000000000'],
+      reference: [''],                    // ← Empty for backend generation
       name: ['', [Validators.required, Validators.minLength(2)]],
       description: [''],
       unitPriceHT: [0, [Validators.required, Validators.min(0)]],
@@ -74,15 +79,33 @@ export class Product implements OnInit, AfterViewInit {
 
   openAddModal(): void {
     this.isEdit = false;
+    this.isView = false;
+    this.selectedProduct = null;
     this.selectedId = '';
-    this.resetForm();
+    
+    this.resetForm();        // Reference will be empty
     this.modalInstance.show();
   }
 
   openEditModal(product: ProductModel): void {
     this.isEdit = true;
+    this.isView = false;
+    this.selectedProduct = null;
     this.selectedId = product.id;
+    this.patchProduct(product);
+    this.modalInstance.show();
+  }
 
+  openViewModal(product: ProductModel): void {
+    this.isEdit = false;
+    this.isView = true;
+    this.selectedProduct = product;
+    this.selectedId = product.id;
+    this.patchProduct(product);
+    this.modalInstance.show();
+  }
+
+  private patchProduct(product: ProductModel): void {
     this.addOrEditForm.patchValue({
       id: product.id,
       reference: product.reference,
@@ -91,15 +114,20 @@ export class Product implements OnInit, AfterViewInit {
       unitPriceHT: product.unitPriceHT,
       stockQuantity: product.stockQuantity,
     });
-
-    this.modalInstance.show();
   }
 
   closeModal(): void {
     this.modalInstance.hide();
+    setTimeout(() => {
+      this.isEdit = false;
+      this.isView = false;
+      this.selectedProduct = null;
+    }, 300);
   }
 
   submit(): void {
+    if (this.isView) return;
+
     if (this.addOrEditForm.invalid) {
       this.addOrEditForm.markAllAsTouched();
       Swal.fire({
@@ -130,7 +158,6 @@ export class Product implements OnInit, AfterViewInit {
         },
         error: (err) => {
           this.submitting.set(false);
-          console.error('❌ Update failed:', err);
           Swal.fire({
             icon: 'error',
             title: 'Erreur',
@@ -155,7 +182,6 @@ export class Product implements OnInit, AfterViewInit {
         },
         error: (err: any) => {
           this.submitting.set(false);
-          console.error('❌ Add failed:', err);
           Swal.fire({
             icon: 'error',
             title: 'Erreur',
@@ -204,6 +230,7 @@ export class Product implements OnInit, AfterViewInit {
   resetForm(): void {
     this.addOrEditForm.reset({
       id: '00000000-0000-0000-0000-000000000000',
+      reference: '',           // Empty when adding new
       unitPriceHT: 0,
       stockQuantity: 0,
     });

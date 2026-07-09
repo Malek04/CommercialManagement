@@ -77,7 +77,7 @@ namespace CommercialManagement.Api.Controllers
                 Id = Guid.NewGuid(),
                 OrderNumber = $"CMD-{DateTime.Now:yyyyMMddHHmmss}",
                 ClientId = input.ClientId,
-                OrderDate = DateTime.Now,
+                OrderDate = input.OrderDate != default ? input.OrderDate : DateTime.Now,
                 Status = OrderStatus.Draft
             };
 
@@ -159,9 +159,6 @@ namespace CommercialManagement.Api.Controllers
             return Ok();
         }
 
-
-
-
         [HttpPost("{id}/cancel")]
         public IActionResult CancelOrder(Guid id)
         {
@@ -186,27 +183,69 @@ namespace CommercialManagement.Api.Controllers
         }
 
 
-
-
         [HttpPut("{id}")]
         public IActionResult UpdateOrder(Guid id, OrderRequestDto input)
         {
             var order = _orderRepository.GetOrderById(id);
 
-
             if (order == null)
                 return NotFound("Commande introuvable.");
-
 
             if (order.Status != OrderStatus.Draft)
                 return BadRequest("Seules les commandes en brouillon peuvent être modifiées.");
 
+            if (input.ClientId == Guid.Empty)
+                return BadRequest("Client obligatoire.");
+
+            var client = _clientRepository.GetClientById(input.ClientId);
+            if (client == null)
+                return NotFound("Client introuvable.");
+
+            if (input.Lines == null || !input.Lines.Any())
+                return BadRequest("Commande vide.");
+
+            var resolvedProducts = new List<(OrderLineRequestDto Line, Product Product)>();
+            foreach (var line in input.Lines)
+            {
+                if (line.Quantity <= 0)
+                    return BadRequest("Quantité invalide.");
+
+                var product = _productRepository.GetProductById(line.ProductId);
+                if (product == null)
+                    return NotFound("Produit introuvable.");
+
+                if (line.Quantity > product.StockQuantity)
+                    return BadRequest($"Stock insuffisant pour {product.Name}.");
+
+                resolvedProducts.Add((line, product));
+            }
+
+            foreach (var oldLine in order.OrderLines.ToList())
+            {
+                _orderLineRepository.DeleteOrderLine(oldLine);
+            }
 
             order.ClientId = input.ClientId;
+            if (input.OrderDate != default)
+            {
+                order.OrderDate = input.OrderDate;
+            }
 
+            foreach (var (line, product) in resolvedProducts)
+            {
+                _orderLineRepository.AddOrderLine(new OrderLine
+                {
+                    Id = Guid.NewGuid(),
+                    OrderId = order.Id,
+                    ProductId = product.Id,
+                    Quantity = line.Quantity,
+                    UnitPrice = product.UnitPriceHT,
+                    TotalLine = line.Quantity * product.UnitPriceHT
+                });
+            }
 
+            order.CalculateTotals();
             _orderRepository.UpdateOrder(order);
-
 
             return NoContent();
         }
@@ -259,6 +298,10 @@ namespace CommercialManagement.Api.Controllers
                 LastName = order.Client?.LastName,
                 Email = order.Client?.Email,
                 Phone = order.Client?.Phone,
+                Rue = order.Client?.Adresse.Rue,
+                CodePostal = order.Client?.Adresse.CodePostal,
+                Ville = order.Client?.Adresse.Ville,
+                Pays = order.Client?.Adresse.Pays,
 
 
                 Lines = order.OrderLines.Select(x => new OrderLineItemDto

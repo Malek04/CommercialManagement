@@ -19,8 +19,11 @@ export class Client implements OnInit, AfterViewInit {
 
   clients = signal<ClientModel[]>([]);
   addOrEditForm!: FormGroup;
+  
   isEdit = false;
+  isView = false;           // ← NEW: View mode
   selectedId = '';
+  
   loading = signal(false);
   submitting = signal(false);
   dataLoaded = signal(false);
@@ -76,28 +79,39 @@ export class Client implements OnInit, AfterViewInit {
         this.loading.set(false);
         this.dataLoaded.set(true);
         console.error('❌ Error loading clients:', err);
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: 'Impossible de charger la liste des clients.',
-        });
+        Swal.fire({ icon: 'error', title: 'Erreur', text: 'Impossible de charger la liste des clients.' });
       },
     });
   }
 
-  // ✅ Ouvre le modal en mode "Ajout"
+  // ✅ Open modal in Add mode
   openAddModal(): void {
     this.isEdit = false;
+    this.isView = false;
     this.selectedId = '';
     this.resetForm();
     this.modalInstance.show();
   }
 
-  // ✅ Ouvre le modal en mode "Modification"
+  // ✅ Open modal in Edit mode
   openEditModal(client: ClientModel): void {
     this.isEdit = true;
+    this.isView = false;
     this.selectedId = client.id;
+    this.patchClient(client);
+    this.modalInstance.show();
+  }
 
+  // ✅ NEW: Open modal in View (Consulter) mode
+  openViewModal(client: ClientModel): void {
+    this.isEdit = false;
+    this.isView = true;
+    this.selectedId = client.id;
+    this.patchClient(client);
+    this.modalInstance.show();
+  }
+
+  private patchClient(client: ClientModel): void {
     this.addOrEditForm.patchValue({
       id: client.id,
       firstName: client.firstName,
@@ -111,22 +125,23 @@ export class Client implements OnInit, AfterViewInit {
         pays: client.adresse?.pays || '',
       },
     });
-
-    this.modalInstance.show();
   }
 
   closeModal(): void {
     this.modalInstance.hide();
+    // Reset modes after closing
+    setTimeout(() => {
+      this.isEdit = false;
+      this.isView = false;
+    }, 300);
   }
 
   submit(): void {
+    if (this.isView) return; // Should not submit in view mode
+
     if (this.addOrEditForm.invalid) {
       this.addOrEditForm.markAllAsTouched();
-      Swal.fire({
-        icon: 'warning',
-        title: 'Formulaire incomplet',
-        text: 'Merci de remplir correctement tous les champs obligatoires.',
-      });
+      Swal.fire({ icon: 'warning', title: 'Formulaire incomplet', text: 'Merci de remplir correctement tous les champs obligatoires.' });
       return;
     }
 
@@ -140,22 +155,11 @@ export class Client implements OnInit, AfterViewInit {
           this.closeModal();
           this.loadClients();
           this.resetForm();
-          Swal.fire({
-            icon: 'success',
-            title: 'Client mis à jour',
-            text: 'Les informations ont été mises à jour avec succès.',
-            timer: 2000,
-            showConfirmButton: false,
-          });
+          Swal.fire({ icon: 'success', title: 'Client mis à jour', text: 'Les informations ont été mises à jour avec succès.', timer: 2000, showConfirmButton: false });
         },
         error: (err) => {
           this.submitting.set(false);
-          console.error('❌ Update failed:', err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: err?.error?.message || 'Une erreur est survenue lors de la mise à jour du client.',
-          });
+          Swal.fire({ icon: 'error', title: 'Erreur', text: err?.error?.message || 'Une erreur est survenue lors de la mise à jour.' });
         }
       });
     } else {
@@ -165,22 +169,11 @@ export class Client implements OnInit, AfterViewInit {
           this.closeModal();
           this.loadClients();
           this.resetForm();
-          Swal.fire({
-            icon: 'success',
-            title: 'Client ajouté',
-            text: 'Le client a été ajouté avec succès.',
-            timer: 2000,
-            showConfirmButton: false,
-          });
+          Swal.fire({ icon: 'success', title: 'Client ajouté', text: 'Le client a été ajouté avec succès.', timer: 2000, showConfirmButton: false });
         },
         error: (err: any) => {
           this.submitting.set(false);
-          console.error('❌ Add failed:', err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: err?.error?.message || "Une erreur est survenue lors de l'ajout du client.",
-          });
+          Swal.fire({ icon: 'error', title: 'Erreur', text: err?.error?.message || "Une erreur est survenue lors de l'ajout." });
         }
       });
     }
@@ -200,31 +193,16 @@ export class Client implements OnInit, AfterViewInit {
         this.clientService.delete(id).subscribe({
           next: () => {
             this.loadClients();
-            Swal.fire({
-              icon: 'success',
-              title: 'Supprimé',
-              text: 'Le client a été supprimé.',
-              timer: 1500,
-              showConfirmButton: false,
-            });
+            Swal.fire({ icon: 'success', title: 'Supprimé', text: 'Le client a été supprimé.', timer: 1500, showConfirmButton: false });
           },
-          error: (err) => {
-            console.error('Delete error:', err);
-            Swal.fire({
-              icon: 'error',
-              title: 'Erreur',
-              text: 'Impossible de supprimer ce client.',
-            });
-          }
+          error: () => Swal.fire({ icon: 'error', title: 'Erreur', text: 'Impossible de supprimer ce client.' })
         });
       }
     });
   }
 
   resetForm(): void {
-    this.addOrEditForm.reset({
-      id: '00000000-0000-0000-0000-000000000000',
-    });
+    this.addOrEditForm.reset({ id: '00000000-0000-0000-0000-000000000000' });
   }
 
   trackById(index: number, client: ClientModel): string {

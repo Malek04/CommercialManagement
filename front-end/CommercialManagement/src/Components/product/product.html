@@ -10,16 +10,13 @@
   <div class="card shadow-sm">
     <div class="card-header d-flex justify-content-between align-items-center">
       <h5>Liste des Produits</h5>
-      <button
-        class="btn btn-outline-primary btn-sm"
-        (click)="loadProducts()"
-        [disabled]="loading()"
-      >
+      <button class="btn btn-outline-primary btn-sm" (click)="loadProducts()" [disabled]="loading()">
         <span *ngIf="loading()" class="spinner-border spinner-border-sm me-1"></span>
         <i class="bi bi-arrow-clockwise" *ngIf="!loading()"></i> Rafraîchir
       </button>
     </div>
     <div class="card-body p-0">
+
       <!-- Loading state -->
       <div *ngIf="loading()" class="text-center py-5">
         <div class="spinner-border text-primary" role="status">
@@ -29,10 +26,7 @@
       </div>
 
       <!-- Table -->
-      <table
-        class="table table-hover mb-0"
-        *ngIf="!loading() && dataLoaded() && products().length > 0"
-      >
+      <table class="table table-hover mb-0" *ngIf="!loading() && dataLoaded() && products().length > 0">
         <thead class="table-light">
           <tr>
             <th>Référence</th>
@@ -50,13 +44,13 @@
             <td>{{ p.name }}</td>
             <td>{{ p.description }}</td>
             <td class="text-end">{{ p.unitPriceHT | number:'1.3-3' }} DT</td>
-
             <td class="text-end">{{ p.stockQuantity }}</td>
             <td>{{ p.created ? (p.created | date: 'dd/MM/yyyy HH:mm') : '-' }}</td>
             <td class="text-end">
-              <button class="btn btn-sm btn-warning me-2" (click)="openEditModal(p)">
-                Modifier
+              <button class="btn btn-sm btn-info me-1" (click)="openViewModal(p)" title="Consulter">
+                <i class="bi bi-eye"></i>
               </button>
+              <button class="btn btn-sm btn-warning me-1" (click)="openEditModal(p)">Modifier</button>
               <button class="btn btn-sm btn-danger" (click)="delete(p.id)">Supprimer</button>
             </td>
           </tr>
@@ -64,87 +58,83 @@
       </table>
 
       <!-- Empty State -->
-      <div
-        *ngIf="!loading() && dataLoaded() && products().length === 0"
-        class="text-center py-5 text-muted"
-      >
+      <div *ngIf="!loading() && dataLoaded() && products().length === 0" class="text-center py-5 text-muted">
         Aucun produit pour le moment.
       </div>
     </div>
   </div>
 </div>
 
-<!-- ✅ Modal Ajout / Modification -->
+<!-- ✅ Modal Ajout / Modification / Consultation -->
 <div class="modal fade" #productModal tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <form [formGroup]="addOrEditForm" (ngSubmit)="submit()">
         <div class="modal-header">
           <h5 class="modal-title">
-            {{ isEdit ? 'Modifier Produit' : 'Ajouter un Produit' }}
+            {{ isView ? 'Détails du Produit' : isEdit ? 'Modifier Produit' : 'Ajouter un Produit' }}
           </h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
         </div>
 
         <div class="modal-body">
           <div class="row g-3">
+
+            <!-- Reference: Hidden when adding new product -->
+            <div class="col-md-6" *ngIf="isEdit || isView">
+              <label class="form-label">Référence</label>
+              <input type="text" class="form-control" formControlName="reference"
+                     [readonly]="true" />
+            </div>
+
             <div class="col-md-6">
               <label class="form-label">Nom</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="name"
-                [class.is-invalid]="
-                  addOrEditForm.get('name')?.invalid && addOrEditForm.get('name')?.touched
-                "
-              />
+              <input type="text" class="form-control" formControlName="name"
+                     [class.is-invalid]="addOrEditForm.get('name')?.invalid && addOrEditForm.get('name')?.touched"
+                     [readonly]="isView" [attr.disabled]="isView ? true : null" />
             </div>
 
             <div class="col-12">
               <label class="form-label">Description</label>
-              <textarea class="form-control" rows="3" formControlName="description"></textarea>
+              <textarea class="form-control" rows="3" formControlName="description"
+                        [readonly]="isView" [attr.disabled]="isView ? true : null"></textarea>
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Prix Unitaire HT (DT)</label>
               <div class="input-group">
-                <input
-                  type="number"
-                  step="0.001"
-                  min="0"
-                  class="form-control"
-                  formControlName="unitPriceHT"
-                  [class.is-invalid]="
-                    addOrEditForm.get('unitPriceHT')?.invalid &&
-                    addOrEditForm.get('unitPriceHT')?.touched
-                  "
-                />
+                <input type="number" step="0.001" min="0" class="form-control" formControlName="unitPriceHT"
+                       [class.is-invalid]="addOrEditForm.get('unitPriceHT')?.invalid && addOrEditForm.get('unitPriceHT')?.touched"
+                       [readonly]="isView" [attr.disabled]="isView ? true : null" />
                 <span class="input-group-text">DT</span>
               </div>
             </div>
+
             <div class="col-md-6">
               <label class="form-label">Quantité en Stock</label>
-              <input
-                type="number"
-                class="form-control"
-                formControlName="stockQuantity"
-                [class.is-invalid]="
-                  addOrEditForm.get('stockQuantity')?.invalid &&
-                  addOrEditForm.get('stockQuantity')?.touched
-                "
-              />
+              <input type="number" class="form-control" formControlName="stockQuantity"
+                     [class.is-invalid]="addOrEditForm.get('stockQuantity')?.invalid && addOrEditForm.get('stockQuantity')?.touched"
+                     [readonly]="isView" [attr.disabled]="isView ? true : null" />
+            </div>
+
+            <!-- 📅 Date de création (visible uniquement en mode Consulter) -->
+            <div class="col-12 mt-3" *ngIf="isView && selectedProduct">
+              <label class="form-label">Date de création</label>
+              <p class="form-control-static fw-bold text-primary">
+                {{ selectedProduct.created 
+                   ? (selectedProduct.created | date: 'dd/MM/yyyy HH:mm') 
+                   : 'Non disponible' }}
+              </p>
             </div>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-success" [disabled]="submitting()">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">
+            Fermer
+          </button>
+          
+          <button *ngIf="!isView" type="submit" class="btn btn-success" [disabled]="submitting()">
             <span *ngIf="submitting()" class="spinner-border spinner-border-sm me-1"></span>
             {{ isEdit ? 'Mettre à jour' : 'Ajouter Produit' }}
           </button>

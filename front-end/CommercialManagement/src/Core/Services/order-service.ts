@@ -14,7 +14,7 @@ export class OrderService {
   get(): Observable<Order[]> {
     return this.http.get<Order[]>(this.baseUrl);
   }
-
+  
   getById(id: string): Observable<Order> {
     return this.http.get<Order>(`${this.baseUrl}/${id}`);
   }
@@ -38,4 +38,5 @@ export class OrderService {
   cancel(id: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/${id}/cancel`, {});
   }
+  
 }

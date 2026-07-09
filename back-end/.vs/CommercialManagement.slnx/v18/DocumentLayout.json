@@ -5,6 +5,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.api\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|solutionrelative:commercialmanagement.api\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.api\\controllers\\clientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|solutionrelative:commercialmanagement.api\\controllers\\clientcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.api\\mappers\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{536D5BA1-DD5C-4A11-8BD9-BCBC2B1835A9}|CommercialManagement.Api\\CommercialManagement.Api.csproj|solutionrelative:commercialmanagement.api\\mappers\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|c:\\users\\malek\\documents\\projet\\commercialmanagement\\back-end\\commercialmanagement.core\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4D3F2A56-1801-4327-ABFD-3B419E269908}|CommercialManagement.Core\\CommercialManagement.Core.csproj|solutionrelative:commercialmanagement.core\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,11 +26,50 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ClientController.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Controllers\\ClientController.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Api\\Controllers\\ClientController.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Controllers\\ClientController.cs",
+              "RelativeToolTip": "CommercialManagement.Api\\Controllers\\ClientController.cs",
+              "ViewState": "AgIAADcAAAAAAAAAAAAkwE0AAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-09T01:50:41.735Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MappingProfile.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Mappers\\MappingProfile.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Api\\Mappers\\MappingProfile.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Mappers\\MappingProfile.cs",
+              "RelativeToolTip": "CommercialManagement.Api\\Mappers\\MappingProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAABZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-09T01:14:23.705Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Product.cs",
+              "DocumentMoniker": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "CommercialManagement.Core\\Models\\Product.cs",
+              "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Core\\Models\\Product.cs",
+              "RelativeToolTip": "CommercialManagement.Core\\Models\\Product.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAA1wBkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-09T00:29:42.975Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -28,7 +79,7 @@
               "RelativeDocumentMoniker": "CommercialManagement.Api\\Controllers\\OrderController.cs",
               "ToolTip": "C:\\Users\\malek\\Documents\\projet\\CommercialManagement\\back-end\\CommercialManagement.Api\\Controllers\\OrderController.cs",
               "RelativeToolTip": "CommercialManagement.Api\\Controllers\\OrderController.cs",
-              "ViewState": "AgIAAPwAAAAAAAAAAAAqwA8BAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADABAAAAAAAAAAAqwEgBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-08T22:08:58.43Z",
               "EditorCaption": ""

@@ -28,7 +28,6 @@ namespace CommercialManagement.Core.DTOs
         public string? CodePostal { get; set; }
         public string? Pays { get; set; }
 
-        // Fusion : les lignes vivent maintenant dans la commande
         public List<OrderLineItemDto> Lines { get; set; } = new();
     }
 

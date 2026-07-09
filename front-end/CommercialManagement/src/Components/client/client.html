@@ -49,6 +49,9 @@
             </td>
             <td>{{ c.created | date:'dd/MM/yyyy HH:mm' }}</td>
             <td class="text-center">
+              <button class="btn btn-sm btn-info me-1" (click)="openViewModal(c)" title="Consulter">
+              <i class="bi bi-eye"></i>
+              </button>
               <button class="btn btn-sm btn-warning me-2" (click)="openEditModal(c)">Modifier</button>
               <button class="btn btn-sm btn-danger" (click)="delete(c.id)">Supprimer</button>
             </td>

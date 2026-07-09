@@ -42,18 +42,21 @@
             <td>{{ o.firstName }} {{ o.lastName }}</td>
             <td>{{ o.orderDate | date:'dd/MM/yyyy' }}</td>
             <td>
-              <span
-                class="badge"
-                [class.bg-secondary]="o.status === OrderStatus.Draft"
-                [class.bg-success]="o.status === OrderStatus.Validated"
-                [class.bg-danger]="o.status === OrderStatus.Cancelled"
-              >
+              <span class="badge"
+                    [class.bg-secondary]="o.status === OrderStatus.Draft"
+                    [class.bg-success]="o.status === OrderStatus.Validated"
+                    [class.bg-danger]="o.status === OrderStatus.Cancelled">
                 {{ statusLabel(o.status) }}
               </span>
             </td>
             <td class="text-end">{{ o.totalHT | number:'1.3-3' }} DT</td>
             <td class="text-end">{{ o.totalTTC | number:'1.3-3' }} DT</td>
             <td class="text-end">
+              <!-- Consulter Button -->
+              <button class="btn btn-sm btn-info me-2" (click)="consultOrder(o)">
+                <i class="bi bi-eye"></i> Consulter
+              </button>
+
               <button class="btn btn-sm btn-success me-2" *ngIf="isDraft(o)" (click)="validateOrder(o.id)">
                 Valider
               </button>
@@ -78,6 +81,7 @@
   </div>
 </div>
 
+<!-- ====================== ADD / EDIT MODAL ====================== -->
 <div class="modal fade" #orderModal tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
@@ -93,11 +97,8 @@
           <div class="row g-3">
             <div class="col-md-6">
               <label class="form-label">Client</label>
-              <select
-                class="form-select"
-                formControlName="clientId"
-                [class.is-invalid]="addOrEditForm.get('clientId')?.invalid && addOrEditForm.get('clientId')?.touched"
-              >
+              <select class="form-select" formControlName="clientId"
+                [class.is-invalid]="addOrEditForm.get('clientId')?.invalid && addOrEditForm.get('clientId')?.touched">
                 <option value="" disabled>Sélectionner un client</option>
                 <option *ngFor="let c of clients()" [value]="c.id">
                   {{ c.firstName }} {{ c.lastName }}
@@ -133,12 +134,9 @@
               <tbody formArrayName="orderLines">
                 <tr *ngFor="let line of orderLines.controls; let i = index" [formGroupName]="i">
                   <td>
-                    <select
-                      class="form-select"
-                      formControlName="productId"
+                    <select class="form-select" formControlName="productId"
                       (change)="onProductChange(i)"
-                      [class.is-invalid]="line.get('productId')?.invalid && line.get('productId')?.touched"
-                    >
+                      [class.is-invalid]="line.get('productId')?.invalid && line.get('productId')?.touched">
                       <option value="" disabled>Sélectionner un produit</option>
                       <option *ngFor="let p of products()" [value]="p.id">
                         {{ p.name }} ({{ p.reference }})
@@ -146,13 +144,8 @@
                     </select>
                   </td>
                   <td>
-                    <input
-                      type="number"
-                      min="1"
-                      class="form-control"
-                      formControlName="quantity"
-                      [class.is-invalid]="line.get('quantity')?.invalid && line.get('quantity')?.touched"
-                    />
+                    <input type="number" min="1" class="form-control" formControlName="quantity"
+                      [class.is-invalid]="line.get('quantity')?.invalid && line.get('quantity')?.touched" />
                   </td>
                   <td>
                     <input type="number" step="0.001" class="form-control" formControlName="unitPrice" readonly />
@@ -161,12 +154,8 @@
                     {{ lineTotal(i) | number:'1.3-3' }} DT
                   </td>
                   <td class="text-center">
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-outline-danger"
-                      (click)="removeLine(i)"
-                      title="Supprimer la ligne"
-                    >
+                    <button type="button" class="btn btn-sm btn-outline-danger"
+                      (click)="removeLine(i)" title="Supprimer la ligne">
                       <i class="bi bi-trash"></i>
                     </button>
                   </td>
@@ -202,6 +191,98 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- ====================== CONSULT MODAL ====================== -->
+<div class="modal fade" #consultModal tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="bi bi-eye"></i> Consultation de la Commande
+        </h5>
+        <button type="button" class="btn-close" (click)="closeConsultModal()" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body" *ngIf="selectedOrder()">
+        <div class="row g-3 mb-4">
+          <div class="col-md-3">
+            <strong>N° Commande</strong><br>
+            {{ selectedOrder()?.orderNumber || '—' }}
+          </div>
+          <div class="col-md-3">
+            <strong>Date</strong><br>
+            {{ selectedOrder()?.orderDate | date:'dd/MM/yyyy' }}
+          </div>
+          <div class="col-md-3">
+            <strong>Client</strong><br>
+            {{ selectedOrder()?.firstName }} {{ selectedOrder()?.lastName }}
+          </div>
+          <div class="col-md-3">
+            <strong>Statut</strong><br>
+            <span class="badge"
+                  [class.bg-secondary]="selectedOrder()?.status === OrderStatus.Draft"
+                  [class.bg-success]="selectedOrder()?.status === OrderStatus.Validated"
+                  [class.bg-danger]="selectedOrder()?.status === OrderStatus.Cancelled">
+              {{ statusLabel(selectedOrder()?.status || 0) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- FINAL ADDRESS DISPLAY -->
+        <div class="mb-4">
+          <strong>Adresse de livraison :</strong><br>
+          <div >
+            <span>{{ selectedOrder()?.rue || '—' }} </span>
+            <span>{{ selectedOrder()?.ville || '—' }} {{ selectedOrder()?.codePostal || '' }} </span>
+            <span>{{ selectedOrder()?.codePostal || '—' }} {{ selectedOrder()?.codePostal || '' }} </span>
+            <span>{{ selectedOrder()?.pays || '—' }}</span>
+          </div>
+          <ng-template #noAddressBlock>
+            <span class="text-muted">Aucune adresse enregistrée pour cette commande</span>
+          </ng-template>
+        </div>
+
+        <h6 class="mb-3">Lignes de commande</h6>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>Produit</th>
+                <th>Référence</th>
+                <th class="text-end">Quantité</th>
+                <th class="text-end">Prix Unitaire</th>
+                <th class="text-end">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let line of selectedOrder()?.lines">
+                <td>{{ line.productName || '—' }}</td>
+                <td>{{ line.productReference || '—' }}</td>
+                <td class="text-end">{{ line.quantity }}</td>
+                <td class="text-end">{{ line.unitPrice | number:'1.3-3' }} DT</td>
+                <td class="text-end">{{ line.totalLine | number:'1.3-3' }} DT</td>
+              </tr>
+            </tbody>
+            <tfoot class="table-light fw-bold">
+              <tr>
+                <td colspan="4" class="text-end">Total HT</td>
+                <td class="text-end">{{ selectedOrder()?.totalHT | number:'1.3-3' }} DT</td>
+              </tr>
+              <tr>
+                <td colspan="4" class="text-end">Total TTC (19%)</td>
+                <td class="text-end">{{ selectedOrder()?.totalTTC | number:'1.3-3' }} DT</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeConsultModal()">Fermer</button>
+      </div>
     </div>
   </div>
 </div>

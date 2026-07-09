@@ -22,7 +22,10 @@ import { Observable } from 'rxjs';
 })
 export class Order implements OnInit, AfterViewInit {
   @ViewChild('orderModal') orderModalRef!: ElementRef;
+  @ViewChild('consultModal') consultModalRef!: ElementRef;
+
   private modalInstance!: Modal;
+  private consultModalInstance!: Modal;
 
   orders = signal<OrderModel[]>([]);
   clients = signal<ClientModel[]>([]);
@@ -35,7 +38,10 @@ export class Order implements OnInit, AfterViewInit {
   submitting = signal(false);
   dataLoaded = signal(false);
 
-  OrderStatus = OrderStatus; // exposed for template comparisons
+  // For consultation modal
+  selectedOrder = signal<OrderModel | null>(null);
+
+  OrderStatus = OrderStatus;
   statusLabels = OrderStatusLabels;
 
   constructor(
@@ -54,14 +60,17 @@ export class Order implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.modalInstance = new Modal(this.orderModalRef.nativeElement);
+    this.consultModalInstance = new Modal(this.consultModalRef.nativeElement);
+  }
+
+  private todayIso(): string {
+    return new Date().toISOString().substring(0, 10);
   }
 
   private initForm(): void {
-    // orderNumber and status are server-controlled: number is generated,
-    // status starts at Draft and only changes via validate/cancel endpoints.
     this.addOrEditForm = this.fb.group({
       clientId: ['', Validators.required],
-      orderDate: [new Date().toISOString(), Validators.required],
+      orderDate: [this.todayIso(), Validators.required],
       orderLines: this.fb.array([]),
     });
   }
@@ -75,8 +84,6 @@ export class Order implements OnInit, AfterViewInit {
       id: [line?.id || null],
       productId: [line?.productId || '', Validators.required],
       quantity: [line?.quantity || 1, [Validators.required, Validators.min(1)]],
-      // unitPrice is display-only: always resynced from the selected
-      // product, never sent to the server.
       unitPrice: [{ value: line?.unitPrice || 0, disabled: true }],
     });
   }
@@ -139,7 +146,6 @@ export class Order implements OnInit, AfterViewInit {
       error: (err: any) => console.error('❌ Error loading clients:', err),
     });
   }
-
   loadProducts(): void {
     this.productService.get().subscribe({
       next: (data: ProductModel[]) => this.products.set([...data]),
@@ -153,20 +159,146 @@ export class Order implements OnInit, AfterViewInit {
   }
 
   statusLabel(status: number): string {
-    return this.statusLabels[status] || String(status);
+    return this.statusLabels[status] ?? String(status);
+  }
+
+  // --- Comparaison robuste : gère le statut renvoyé en number (0,1,2) OU en string ("Draft","Validated",...) ---
+  private statusEquals(order: OrderModel, target: OrderStatus): boolean {
+    const raw: any = (order as any).status;
+
+    if (typeof raw === 'number') {
+      return raw === target;
+    }
+
+    if (typeof raw === 'string') {
+      const asNumber = Number(raw);
+      if (!Number.isNaN(asNumber)) {
+        return asNumber === target;
+      }
+      // Comparaison par nom d'enum (ex: "Draft" === OrderStatus[0])
+      const targetName = (OrderStatus as any)[target];
+      return typeof targetName === 'string' && raw.toLowerCase() === targetName.toLowerCase();
+    }
+
+    return false;
   }
 
   isValidated(order: OrderModel): boolean {
-    return order.status === OrderStatus.Validated;
+    return this.statusEquals(order, OrderStatus.Validated);
   }
 
   isCancelled(order: OrderModel): boolean {
-    return order.status === OrderStatus.Cancelled;
+    return this.statusEquals(order, OrderStatus.Cancelled);
   }
 
-  // Draft is the only status where edit/delete/validate/cancel are all allowed
   isDraft(order: OrderModel): boolean {
-    return order.status === OrderStatus.Draft;
+    return this.statusEquals(order, OrderStatus.Draft);
+  }
+
+  validateOrder(id: string): void {
+    Swal.fire({
+      title: 'Valider la commande ?',
+      text: 'La commande sera définitivement validée.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, valider',
+      cancelButtonText: 'Annuler',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      this.orderService.validate(id).subscribe({
+        next: () => {
+          Swal.fire({ icon: 'success', title: 'Commande validée', timer: 1500, showConfirmButton: false });
+          this.loadOrders();
+
+          const current = this.selectedOrder();
+          if (current && current.id === id) {
+            this.selectedOrder.set({ ...current, status: OrderStatus.Validated });
+          }
+        },
+        error: (err: any) => {
+          console.error('❌ Validation error:', err?.status, err?.error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: err?.error?.Message || err?.error?.message || err?.error || 'Impossible de valider la commande.',
+          });
+        },
+      });
+    });
+  }
+
+  cancelOrder(id: string): void {
+    Swal.fire({
+      title: 'Annuler la commande ?',
+      text: 'Cette action changera le statut de la commande.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, annuler',
+      cancelButtonText: 'Retour',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      this.orderService.cancel(id).subscribe({
+        next: () => {
+          Swal.fire({ icon: 'success', title: 'Commande annulée', timer: 1500, showConfirmButton: false });
+          this.loadOrders();
+
+          const current = this.selectedOrder();
+          if (current && current.id === id) {
+            this.selectedOrder.set({ ...current, status: OrderStatus.Cancelled });
+          }
+        },
+        error: (err: any) => {
+          console.error('❌ Cancel error:', err?.status, err?.error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: err?.error?.Message || err?.error?.message || err?.error || "Impossible d'annuler la commande.",
+          });
+        },
+      });
+    });
+  }
+
+  // ==================== DELETE ORDER (méthode manquante — appelée par le template) ====================
+  delete(id: string): void {
+    Swal.fire({
+      title: 'Supprimer la commande ?',
+      text: 'Cette action est irréversible.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, supprimer',
+      cancelButtonText: 'Annuler',
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      this.orderService.delete(id).subscribe({
+        next: () => {
+          Swal.fire({ icon: 'success', title: 'Commande supprimée', timer: 1500, showConfirmButton: false });
+          this.loadOrders();
+        },
+        error: (err: any) => {
+          console.error('❌ Delete error:', err?.status, err?.error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur',
+            text: err?.error?.Message || err?.error?.message || err?.error || 'Impossible de supprimer la commande.',
+          });
+        },
+      });
+    });
+  }
+
+  // ==================== CONSULT ORDER ====================
+  consultOrder(order: OrderModel): void {
+    this.selectedOrder.set({ ...order });
+    this.consultModalInstance.show();
+  }
+
+  closeConsultModal(): void {
+    this.consultModalInstance.hide();
+    this.selectedOrder.set(null);
   }
 
   openAddModal(): void {
@@ -197,9 +329,7 @@ export class Order implements OnInit, AfterViewInit {
 
     this.addOrEditForm.patchValue({
       clientId: order.clientId,
-      orderDate: order.orderDate 
-    ? new Date(order.orderDate).toISOString().substring(0, 10)
-    : ''
+      orderDate: order.orderDate ? new Date(order.orderDate).toISOString().substring(0, 10) : this.todayIso(),
     });
 
     this.modalInstance.show();
@@ -210,153 +340,73 @@ export class Order implements OnInit, AfterViewInit {
   }
 
   submit(): void {
-  if (this.addOrEditForm.invalid || this.orderLines.length === 0) {
-    this.addOrEditForm.markAllAsTouched();
-    Swal.fire({
-      icon: 'warning',
-      title: 'Formulaire incomplet',
-      text:
-        this.orderLines.length === 0
-          ? 'Ajoutez au moins une ligne de commande.'
-          : 'Merci de remplir correctement tous les champs obligatoires.',
-    });
-    return;
-  }
-
-  this.submitting.set(true);
-
-  const raw = this.addOrEditForm.getRawValue();
-  const payload: OrderRequest = {
-    clientId: raw.clientId,
-    orderDate: raw.orderDate,
-    lines: raw.orderLines.map((l: any): OrderLineRequest => ({
-      id: l.id || undefined,
-      productId: l.productId,
-      quantity: l.quantity,
-    })),
-  };
-
-  // Explicit Observable<any> avoids TS trying to unify two different
-  // subscribe() overload sets from Observable<Order> vs Observable<void>.
-  const request$: Observable<any> = this.isEdit
-    ? this.orderService.update(this.selectedId, payload)
-    : this.orderService.post(payload);
-
-  request$.subscribe({
-    next: () => {
-      this.submitting.set(false);
-      this.closeModal();
-      this.loadOrders();
-      this.resetForm();
+    if (this.addOrEditForm.invalid || this.orderLines.length === 0) {
+      this.addOrEditForm.markAllAsTouched();
       Swal.fire({
-        icon: 'success',
-        title: this.isEdit ? 'Commande mise à jour' : 'Commande ajoutée',
-        text: this.isEdit
-          ? 'Les informations ont été mises à jour avec succès.'
-          : 'La commande a été ajoutée avec succès.',
-        timer: 2000,
-        showConfirmButton: false,
+        icon: 'warning',
+        title: 'Formulaire incomplet',
+        text:
+          this.orderLines.length === 0
+            ? 'Ajoutez au moins une ligne de commande.'
+            : 'Merci de remplir correctement tous les champs obligatoires.',
       });
-    },
-    error: (err: any) => {
-      this.submitting.set(false);
-      console.error('❌ Save failed:', err);
-      Swal.fire({
-        icon: 'error',
-        title: 'Erreur',
-        text: err?.error?.Message || err?.error?.message || 'Une erreur est survenue.',
-      });
-    },
-  });
-}
+      return;
+    }
 
-  validateOrder(id: string): void {
-    Swal.fire({
-      icon: 'question',
-      title: 'Valider cette commande ?',
-      text: 'Le stock sera déduit et la commande ne pourra plus être modifiée.',
-      showCancelButton: true,
-      confirmButtonText: 'Oui, valider',
-      cancelButtonText: 'Annuler',
-    }).then((result) => {
-      if (!result.isConfirmed) return;
+    this.submitting.set(true);
 
-      this.orderService.validate(id).subscribe({
-        next: () => {
-          this.loadOrders();
-          Swal.fire({ icon: 'success', title: 'Commande validée', timer: 1500, showConfirmButton: false });
-        },
-        error: (err: any) => {
-          console.error('❌ Validate failed:', err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: err?.error?.Message || err?.error?.message || 'Impossible de valider cette commande.',
-          });
-        },
-      });
-    });
-  }
+    const raw = this.addOrEditForm.getRawValue();
+    const payload: OrderRequest = {
+      clientId: raw.clientId,
+      orderDate: raw.orderDate,
+      lines: raw.orderLines.map(
+        (l: any): OrderLineRequest => ({
+          id: l.id || undefined,
+          productId: l.productId,
+          quantity: l.quantity,
+        })
+      ),
+    };
 
-  cancelOrder(id: string): void {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Annuler cette commande ?',
-      text: 'Cette action ne peut pas être annulée une fois faite.',
-      showCancelButton: true,
-      confirmButtonText: "Oui, annuler la commande",
-      cancelButtonText: 'Retour',
-      confirmButtonColor: '#dc3545',
-    }).then((result) => {
-      if (!result.isConfirmed) return;
+    const request$: Observable<any> = this.isEdit
+      ? this.orderService.update(this.selectedId, payload)
+      : this.orderService.post(payload);
 
-      this.orderService.cancel(id).subscribe({
-        next: () => {
-          this.loadOrders();
-          Swal.fire({ icon: 'success', title: 'Commande annulée', timer: 1500, showConfirmButton: false });
-        },
-        error: (err: any) => {
-          console.error('❌ Cancel failed:', err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Erreur',
-            text: err?.error?.Message || err?.error?.message || "Impossible d'annuler cette commande.",
-          });
-        },
-      });
-    });
-  }
-
-  delete(id: string): void {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Êtes-vous sûr ?',
-      text: 'Cette action est irréversible.',
-      showCancelButton: true,
-      confirmButtonText: 'Oui, supprimer',
-      cancelButtonText: 'Annuler',
-      confirmButtonColor: '#dc3545',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.orderService.delete(id).subscribe({
-          next: () => {
-            this.loadOrders();
-            Swal.fire({ icon: 'success', title: 'Supprimée', timer: 1500, showConfirmButton: false });
-          },
-          error: (err: any) => {
-            console.error('Delete error:', err);
-            Swal.fire({ icon: 'error', title: 'Erreur', text: 'Impossible de supprimer cette commande.' });
-          },
+    request$.subscribe({
+      next: () => {
+        this.submitting.set(false);
+        this.closeModal();
+        this.loadOrders();
+        this.resetForm();
+        Swal.fire({
+          icon: 'success',
+          title: this.isEdit ? 'Commande mise à jour' : 'Commande ajoutée',
+          text: this.isEdit
+            ? 'Les informations ont été mises à jour avec succès.'
+            : 'La commande a été ajoutée avec succès.',
+          timer: 2000,
+          showConfirmButton: false,
         });
-      }
+      },
+      error: (err: any) => {
+        this.submitting.set(false);
+        console.error('❌ Save failed:', err?.status, err?.error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: err?.error?.Message || err?.error?.message || err?.error || 'Une erreur est survenue.',
+        });
+      },
     });
   }
 
   resetForm(): void {
     this.orderLines.clear();
+    this.isEdit = false;
+    this.selectedId = '';
     this.addOrEditForm.reset({
       clientId: '',
-      orderDate: new Date().toISOString(),
+      orderDate: this.todayIso(),
     });
   }
 
